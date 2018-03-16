@@ -252,9 +252,9 @@ BEGIN_EVENT_TABLE ( MyFrame, wxFrame )
 EVT_MENU(ID_CreateQueue, MyFrame::onCreateQueue)
 EVT_MENU(ID_AddData, MyFrame::onAddDataToQueue)
 EVT_MENU(ID_DisplayAllOfQueue, MyFrame::onDisplayAllOfQueue)
-//EVT_MENU(ID_ShowHead, MyFrame::onShowHeadOfQueue)
-//EVT_MENU(ID_ShowTail, MyFrame::onShowTailOfQueue)
-//EVT_MENU(ID_Dequeue, MyFrame::onQueueDequeue)
+EVT_MENU(ID_ShowHead, MyFrame::onShowHeadOfQueue)
+EVT_MENU(ID_ShowTail, MyFrame::onShowTailOfQueue)
+EVT_MENU(ID_Dequeue, MyFrame::onQueueDequeue)
 
 
 
@@ -684,26 +684,53 @@ void MyFrame::onAddDataToQueue(wxCommandEvent& WXUNUSED ( event )) {
 void MyFrame::onDisplayAllOfQueue(wxCommandEvent& WXUNUSED ( event )) {
     mainEditBox->Clear();
     
-    string records = "";
-    string allNodes = theQueue->displayQueue();;
     
-    if (allNodes.size() == 0)
+    string all = theQueue->displayQueue();;
+    string record = all;
+    if (all.size() == 0)
         mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
     else
     {
-        records.append(allNodes);
-        //Loop through the vector, convert each node to a string and append to records
-        
-            records.append("\n");
         
         
-        wxString wxRecords(allNodes.c_str(), wxConvUTF8);
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
-        mainEditBox->AppendText(allNodes);
+        mainEditBox->AppendText(all);
     }
 }
 
+void MyFrame::onShowHeadOfQueue(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    string head = theQueue->front();
+    
+    string record = head;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Queue*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
 
+void MyFrame::onShowTailOfQueue(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    string tail = theQueue->back();
+    
+    string record = tail;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Tail of the Queue*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::onQueueDequeue(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    
+    string del = theQueue->dequeue();
+    string record = del;
+    
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )
     {

@@ -43,7 +43,7 @@ public:
     
     void enqueue(int number, string first, string last, string destination, string season, string booking); //inserts item at the back of queue
     
-    void dequeue(); //removes an item from the front of the queue
+    string dequeue(); //removes an item from the front of the queue
     
     bool isEmpty(); //checks to see if ADT is empty
     
@@ -84,10 +84,10 @@ void Queue::enqueue(int number, string first, string last, string destination, s
     Listt.addAtBack(number, first, last, destination, season, booking);
 }
 
-void Queue::dequeue() {
+string Queue::dequeue() {
     
     
-        Listt.deleteAtFront();
+        return Listt.deleteAtFront();
     
 }
 

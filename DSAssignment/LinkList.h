@@ -48,7 +48,7 @@ public:
     string displayBack();
     string displayFront();
     void traverseList(int number, string first, string last, string destination, string season, string booking);
-    void deleteAtFront();
+    string deleteAtFront();
     void deleteAtBack();
     string displayTheList();
     void searchList(int number, string first, string last, string destination, string season, string booking);
@@ -150,10 +150,10 @@ void LinkList::addAtBack(int number, string first, string last, string destinati
     
 }
 
-void LinkList::deleteAtFront() {
+string LinkList::deleteAtFront() {
     if (front == NULL) {
         cout  << "out of range";
-        return;
+        return "Empty";
         
     }
     string theString = " ";
@@ -166,6 +166,7 @@ void LinkList::deleteAtFront() {
     free(delPtr);
     num_elements--;
     
+    return theString;
 }
 
 void LinkList::deleteAtBack() {
@@ -221,17 +222,19 @@ string LinkList::displayTheList() {
     
     Node *tmp = new Node;
     tmp = front;
+    string record;
+    
     
     while (tmp != NULL) {
         cout << tmp->getRecord() << "-> ";
+        record.append(tmp->getRecord());
+        record.append("\n");
         tmp=tmp->getNextPtr();
         
     }
-    if (tmp == NULL) {
-        return "The End";
-    }
+   
     
-    return tmp -> getRecord();
+    return record;
 }
 
 int LinkList::size() {
