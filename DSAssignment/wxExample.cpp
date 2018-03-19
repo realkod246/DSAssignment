@@ -19,11 +19,13 @@
 
 
 #include "Queue.h"
+#include "deque.h"
 #include "Dialog.h"
 
 using namespace std;
 
 Queue *theQueue = new Queue();
+Deque *theDeque = new Deque();
 
 
 
@@ -124,6 +126,16 @@ class MyFrame: public wxFrame
     void onShowHeadOfQueue(wxCommandEvent& event);
     void onShowTailOfQueue(wxCommandEvent& event);
     void onQueueDequeue(wxCommandEvent& event);
+    
+    // Deque Functions
+    void onCreateDeque(wxCommandEvent& event);
+    void onAddHeadDeque(wxCommandEvent& event);
+    void onAddTailDeque(wxCommandEvent& event);
+    void onDisplayAllOfDeque(wxCommandEvent& event);
+    void onShowHeadOfDeque(wxCommandEvent& event);
+    void onShowTailOfDeque(wxCommandEvent& event);
+    void onDequeueHeadOfDeque(wxCommandEvent& event);
+    void onDequeueTailOfDeque(wxCommandEvent& event);
     
     
     
@@ -255,6 +267,10 @@ EVT_MENU(ID_DisplayAllOfQueue, MyFrame::onDisplayAllOfQueue)
 EVT_MENU(ID_ShowHead, MyFrame::onShowHeadOfQueue)
 EVT_MENU(ID_ShowTail, MyFrame::onShowTailOfQueue)
 EVT_MENU(ID_Dequeue, MyFrame::onQueueDequeue)
+
+// Events for Deque
+EVT_MENU(ID_CreateDeque, MyFrame::onCreateDeque)
+
 
 
 
@@ -731,6 +747,77 @@ void MyFrame::onQueueDequeue(wxCommandEvent& WXUNUSED ( event )) {
     mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
     mainEditBox->AppendText(wxRecord);
 }
+
+
+//===================================================================================\\
+//=========== Definitions for the Deque Functions ===================================\\
+//===================================================================================\\
+
+void MyFrame::onCreateDeque(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    theDeque -> ~Deque();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        return;
+    }
+    
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << booking << endl;
+        if (booking == "Gifted") {
+            theDeque->push_front(theID, fName, lName, destination, season, booking);
+            record = makeTheRecord(theID, fName, lName, destination, season, booking);
+            record.append("\n");
+        }
+        else {
+        theDeque->push_back(theID, fName, lName, destination, season, booking);
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        record.append("\n");
+        }
+        
+        
+        
+        
+        
+        
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+        
+        
+        
+    }
+    inFile.close();
+}
+
+
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )
     {

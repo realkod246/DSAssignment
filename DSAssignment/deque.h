@@ -46,8 +46,9 @@ public:
     void push_front(int number, string first, string last, string destination, string season, string booking);
     void pop_front();
     void pop_back();
-    void insert(int number, string first, string last, string destination, string season, string booking);
+    void insert(int number, string first, string last, string destination, string season, string booking, int atPos);
     void clear();
+    ~Deque();
     
 };
 
@@ -82,7 +83,7 @@ void Deque::push_back(int number, string first, string last, string destination,
         deque.createANode(number, first, last, destination, season, booking);
         return;
     }
-    deque.addAtBack(number, first, last, score);
+    deque.addAtBack(number, first, last, destination, season, booking);
 }
 
 void Deque::push_front(int number, string first, string last, string destination, string season, string booking) {
@@ -114,5 +115,9 @@ void Deque::clear() {
     while (deque.size() != 0) {
         deque.deleteAtFront();
     }
+}
+
+Deque::~Deque() {
+    deque.~LinkList();
 }
 #endif /* deque_h */
