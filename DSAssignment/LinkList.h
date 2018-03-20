@@ -49,7 +49,7 @@ public:
     string displayFront();
     void traverseList(int number, string first, string last, string destination, string season, string booking);
     string deleteAtFront();
-    void deleteAtBack();
+    string deleteAtBack();
     string displayTheList();
     void searchList(int number, string first, string last, string destination, string season, string booking);
     Node* getFront();
@@ -169,24 +169,26 @@ string LinkList::deleteAtFront() {
     return theString;
 }
 
-void LinkList::deleteAtBack() {
+string LinkList::deleteAtBack() {
     if (back == NULL) {
-        cout  << "out of range";
-        return;
+        
+        return "out of range";
         
     }
     Node *tmp = new Node();
     Node *s = front;
+    Node *toShow = new Node();
     while (s->getNextPtr() != NULL) {
         tmp = s;
         s = s -> getNextPtr();
     }
     back = tmp;
+    toShow = s;
     tmp -> setNextPtr(NULL);
     free(s);
     
     
-    
+    return toShow->getRecord();
     
     
     num_elements--;
@@ -279,7 +281,7 @@ void LinkList::traverseList(int number, string first, string last, string destin
     Node* cur = front -> getNextPtr();
     Node *prev = front;
     
-    while ( cur != NULL && number <= cur->getID() )
+    while ( cur != NULL && number >= cur->getID() )
     {
         cur = cur->getNextPtr();
         prev = prev->getNextPtr();

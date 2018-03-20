@@ -44,8 +44,9 @@ public:
     string end();
     string display();
     void push_back(int number, string first, string last, string destination, string season, string booking);
-    void pop_front();
+    string pop_front();
     void clear();
+    ~PQueue();
     
 };
 
@@ -72,11 +73,11 @@ void PQueue::push_back(int number, string first, string last, string destination
         PQ.createANode(number, first, last, destination, season, booking);
         return;
     }
-    if (number > PQ.getFront() -> getID()) {
+    if (number < PQ.getFront() -> getID()) {
         PQ.addAtFront(number, first, last, destination, season, booking);
         return;
     }
-    if (number <= PQ.getFront() -> getID() && PQ.getFront() -> getNextPtr() == NULL) {
+    if (number >= PQ.getFront() -> getID() && PQ.getFront() -> getNextPtr() == NULL) {
         PQ.addAtBack(number, first, last, destination, season, booking);
         return;
     }
@@ -85,8 +86,8 @@ void PQueue::push_back(int number, string first, string last, string destination
     
 }
 
-void PQueue::pop_front() {
-    PQ.deleteAtFront();
+string PQueue::pop_front() {
+    return PQ.deleteAtFront();
 }
 
 string PQueue::display() {
@@ -103,6 +104,12 @@ string PQueue::highestPriority() {
     return PQ.displayFront();
 }
 
+string PQueue::end() {
+    return PQ.displayBack();
+}
 
+PQueue::~PQueue() {
+    PQ.~LinkList();
+}
 
 #endif /* pQueue_h */

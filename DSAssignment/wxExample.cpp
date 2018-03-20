@@ -20,13 +20,14 @@
 
 #include "Queue.h"
 #include "deque.h"
+#include "pQueue.h"
 #include "Dialog.h"
 
 using namespace std;
 
 Queue *theQueue = new Queue();
 Deque *theDeque = new Deque();
-
+PQueue *thePQ = new PQueue();
 
 
 string to_String(int integer) {
@@ -137,8 +138,13 @@ class MyFrame: public wxFrame
     void onDequeueHeadOfDeque(wxCommandEvent& event);
     void onDequeueTailOfDeque(wxCommandEvent& event);
     
-    
-    
+    // Priority Queue Functions
+    void onCreatePQ(wxCommandEvent& event);
+    void OnPQAddData(wxCommandEvent& event);
+    void OnPQDisplayAll(wxCommandEvent& event);
+    void OnPQShowHead(wxCommandEvent& event);
+    void OnPQShowTail(wxCommandEvent& event);
+    void OnPQDequeue(wxCommandEvent& event);
     
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
@@ -270,9 +276,22 @@ EVT_MENU(ID_Dequeue, MyFrame::onQueueDequeue)
 
 // Events for Deque
 EVT_MENU(ID_CreateDeque, MyFrame::onCreateDeque)
+EVT_MENU(ID_AddHead, MyFrame::onAddHeadDeque)
+EVT_MENU(ID_AddTail, MyFrame::onAddTailDeque)
+EVT_MENU(ID_DequeDisplayAll, MyFrame::onDisplayAllOfDeque)
+EVT_MENU(ID_DequeShowHead, MyFrame::onShowHeadOfDeque)
+EVT_MENU(ID_DequeShowTail, MyFrame::onShowTailOfDeque)
+EVT_MENU(ID_DequeueHead, MyFrame::onDequeueHeadOfDeque)
+EVT_MENU(ID_DequeueTail, MyFrame::onDequeueTailOfDeque)
 
 
-
+// Events for PriorityQueue
+EVT_MENU(ID_CreatePQ, MyFrame::onCreatePQ)
+EVT_MENU(ID_PQAddData, MyFrame::OnPQAddData)
+EVT_MENU(ID_PQDisplayAll, MyFrame::OnPQDisplayAll)
+EVT_MENU(ID_PQShowHead, MyFrame::OnPQShowHead)
+EVT_MENU(ID_PQShowTail, MyFrame::OnPQShowTail)
+EVT_MENU(ID_PQDequeue, MyFrame::OnPQDequeue)
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -640,21 +659,11 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
         theQueue->enqueue(theID, fName, lName, destination, season, booking);
         record = makeTheRecord(theID, fName, lName, destination, season, booking);
         record.append("\n");
-            
-            
-            
-            
-            
-        
         
         wxString wxRecord(record.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxRecord);
         
         record = "";
-        
-        
-        
-        
     }
     inFile.close();
     }
@@ -817,6 +826,286 @@ void MyFrame::onCreateDeque(wxCommandEvent& WXUNUSED ( event )) {
     inFile.close();
 }
 
+void MyFrame::onAddHeadDeque(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox -> Clear();
+    record data;
+    
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        theDeque -> push_front(ID, fName, lName, destination, season, booking);
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+void MyFrame::onAddTailDeque(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox -> Clear();
+    record data;
+    
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Deque"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        theDeque -> push_back(ID, fName, lName, destination, season, booking);
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+void MyFrame::onDisplayAllOfDeque(wxCommandEvent& WXUNUSED (event )) {
+    mainEditBox->Clear();
+    
+    
+    string all = theDeque->display();
+    string record = all;
+    if (all.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(all);
+    }
+    
+}
+
+void MyFrame::onShowHeadOfDeque(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    string head = theDeque->begin();
+    
+    string record = head;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::onShowTailOfDeque(wxCommandEvent& WXUNUSED ( event ) ) {
+    mainEditBox->Clear();
+    string head = theDeque->end();
+    
+    string record = head;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::onDequeueHeadOfDeque(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    
+    string del = theDeque->pop_front();
+    string record = del;
+    
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::onDequeueTailOfDeque(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    string del = theDeque->pop_back();
+    string record = del;
+    
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+//===================================================================================\\
+//=========== Definitions for the Priority Queue Functions ===========================\\
+//===================================================================================\\
+
+void MyFrame::onCreatePQ(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    thePQ -> ~PQueue();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        return;
+    }
+    
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << theID << endl;
+        
+        thePQ->push_back(theID, fName, lName, destination, season, booking);
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        record.append("\n");
+        
+        
+        
+        
+        
+        
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+        
+        
+        
+    }
+    inFile.close();
+}
+
+void MyFrame::OnPQAddData(wxCommandEvent& WXUNUSED (event )) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        thePQ -> push_back(ID, fName, lName, destination, season, booking);
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+
+void MyFrame::OnPQDisplayAll(wxCommandEvent& WXUNUSED (event )) {
+    mainEditBox->Clear();
+    
+    
+    string all = thePQ->display();
+    string record = all;
+    if (all.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(all);
+    }
+    
+}
+
+void MyFrame::OnPQShowHead(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    string head = thePQ->highestPriority();
+    
+    string record = head;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::OnPQShowTail(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    string tail = thePQ->end();
+    
+    string record = tail;
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::OnPQDequeue(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    
+    string del = thePQ->pop_front();
+    string record = del;
+    
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
 
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )

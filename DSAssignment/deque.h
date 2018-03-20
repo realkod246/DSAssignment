@@ -44,8 +44,8 @@ public:
     string display();
     void push_back(int number, string first, string last, string destination, string season, string booking);
     void push_front(int number, string first, string last, string destination, string season, string booking);
-    void pop_front();
-    void pop_back();
+    string pop_front();
+    string pop_back();
     void insert(int number, string first, string last, string destination, string season, string booking, int atPos);
     void clear();
     ~Deque();
@@ -94,12 +94,12 @@ void Deque::push_front(int number, string first, string last, string destination
     deque.addAtFront(number, first, last, destination, season, booking);
 }
 
-void Deque::pop_front() {
-     deque.deleteAtFront();
+string Deque::pop_front() {
+     return deque.deleteAtFront();
 }
 
-void Deque::pop_back() {
-    deque.deleteAtBack();
+string Deque::pop_back() {
+    return deque.deleteAtBack();
 }
 
 void Deque::insert(int number, string first, string last, string destination, string season, string booking, int atPos) {
