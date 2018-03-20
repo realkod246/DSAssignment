@@ -22,12 +22,14 @@
 #include "deque.h"
 #include "pQueue.h"
 #include "Dialog.h"
+#include "stack.h"
 
 using namespace std;
 
 Queue *theQueue = new Queue();
 Deque *theDeque = new Deque();
 PQueue *thePQ = new PQueue();
+stack *theStack = new stack();
 
 
 string to_String(int integer) {
@@ -145,6 +147,12 @@ class MyFrame: public wxFrame
     void OnPQShowHead(wxCommandEvent& event);
     void OnPQShowTail(wxCommandEvent& event);
     void OnPQDequeue(wxCommandEvent& event);
+    
+    //Stack Functions
+    void OnCreateStack(wxCommandEvent& event);
+    void OnPop(wxCommandEvent& event);
+    void OnPush(wxCommandEvent& event);
+    void OnStackDisplayAll(wxCommandEvent& event);
     
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
@@ -285,13 +293,20 @@ EVT_MENU(ID_DequeueHead, MyFrame::onDequeueHeadOfDeque)
 EVT_MENU(ID_DequeueTail, MyFrame::onDequeueTailOfDeque)
 
 
-// Events for PriorityQueue
+// Events for Priority Queue
 EVT_MENU(ID_CreatePQ, MyFrame::onCreatePQ)
 EVT_MENU(ID_PQAddData, MyFrame::OnPQAddData)
 EVT_MENU(ID_PQDisplayAll, MyFrame::OnPQDisplayAll)
 EVT_MENU(ID_PQShowHead, MyFrame::OnPQShowHead)
 EVT_MENU(ID_PQShowTail, MyFrame::OnPQShowTail)
 EVT_MENU(ID_PQDequeue, MyFrame::OnPQDequeue)
+
+//Events for Stack
+EVT_MENU (ID_CreateStack, MyFrame::OnCreateStack)
+EVT_MENU (ID_Pop, MyFrame::OnPop)
+EVT_MENU (ID_Push, MyFrame::OnPush)
+EVT_MENU (ID_StackDisplayAll, MyFrame::OnStackDisplayAll )
+
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -1107,6 +1122,133 @@ void MyFrame::OnPQDequeue(wxCommandEvent& WXUNUSED ( event )) {
     mainEditBox->AppendText(wxRecord);
 }
 
+//===================================================================================\\
+//=========== Definitions for the Stack Functions ===================================\\
+//===================================================================================\\
+
+void MyFrame::OnCreateStack(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    theStack -> ~stack();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        return;
+    }
+    
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << theID << endl;
+        
+        theStack->push(theID, fName, lName, destination, season, booking);
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        record.append("\n");
+        
+        
+        
+        
+        
+        
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+        
+        
+        
+    }
+    inFile.close();
+}
+
+void MyFrame::OnPush(wxCommandEvent& WXUNUSED ( event )) {
+mainEditBox->Clear();
+
+
+vacationRecord data;
+Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+                                wxPoint(200,200), wxSize(420,420) );
+if (datadialog->ShowModal() == wxID_OK) {
+    data.ID = datadialog-> idEditBox->GetValue();
+    data.fName = datadialog -> firstNameEditBox->GetValue();
+    data.lName = datadialog -> lastNameEditBox->GetValue();
+    data.destination = datadialog -> destinationEditBox->GetValue();
+    data.booking = datadialog -> bookingEditBox->GetValue();
+    data.season = datadialog -> seasonCombo->GetValue();
+    
+    mainEditBox->Clear();
+    
+    int ID =to_int(string(data.ID.mb_str()));
+    string fName = string(data.fName.mb_str());
+    string lName = string(data.lName.mb_str());
+    string destination = string(data.destination.mb_str());
+    string booking = string(data.booking.mb_str());
+    string season = string(data.season.mb_str());
+    
+    mainEditBox->AppendText(getRecord(data));
+    theStack -> push(ID, fName, lName, destination, season, booking);
+}
+
+else {
+    datadialog -> Close();
+    
+}
+datadialog -> Destroy();
+}
+
+void MyFrame::OnPop(wxCommandEvent& WXUNUSED ( event )) {
+    mainEditBox->Clear();
+    
+    string del = theStack->pop();
+    string record = del;
+    
+    wxString wxRecord(record.c_str(), wxConvUTF8);
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Removed Record*****\n\n"));
+    mainEditBox->AppendText(wxRecord);
+}
+
+void MyFrame::OnStackDisplayAll(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    
+    string all = theStack->displayStack();
+    string record = all;
+    if (all.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(all);
+    }
+}
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )
     {

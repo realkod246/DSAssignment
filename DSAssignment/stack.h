@@ -42,9 +42,10 @@ public:
     string top(); // tells us the top of the the stack without removing it.
     void push(int number, string first, string last, string destination, string season, string booking); // Pushes an element on the top of the stack.
     string displayStack(); // displays the elements in the stack.
-    void pop(); // pops the top of the stack.
+    string pop(); // pops the top of the stack.
     void clear(); // clears the stack from the front.
     void searchStack(int number, string first, string last, string destination, string season, string booking);
+    ~stack();
 };
 
 
@@ -82,9 +83,9 @@ void stack::push(int number, string first, string last, string destination, stri
     
 }
 
-void stack::pop() {
+string stack::pop() {
     
-        Stack.deleteAtFront();
+        return Stack.deleteAtFront();
     
 }
 
@@ -104,5 +105,9 @@ string stack::displayStack() {
 
 void stack::searchStack(int number, string first, string last, string destination, string season, string booking) {
     Stack.searchList(number, first, last, destination, season, booking);
+}
+
+stack::~stack() {
+    Stack.~LinkList();
 }
 #endif /* stack_h */
