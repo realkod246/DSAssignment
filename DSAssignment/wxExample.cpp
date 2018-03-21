@@ -358,16 +358,16 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         wxMenu *menuFile = new wxMenu;
         menuFile->Append(ID_OpenFile, wxT("Open File..."), wxT("Open an Existing File" ));
         menuFile->AppendSeparator();
-        menuFile->Append( ID_DisplayFile, wxT("Display File..."), wxT("Display Contents of the Opened File") );
+        menuFile->Append( ID_DisplayFile, wxT("Display File..."), wxT("&Display Contents of the Opened File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_Save,        wxT("Save File"      ), wxT("Save Opened File") );
+        menuFile->Append( ID_Save,        wxT("Save File"      ), wxT("&Save Opened File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("Save Display as a New File") );
+        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("&Save Display as a New File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_About, wxT("&About...") );
+        menuFile->Append( ID_About, wxT("&About the Creator") );
         menuFile->AppendSeparator();
         
-        menuFile->Append( ID_Quit, wxT("E&xit") );
+        menuFile->Append( ID_Quit, wxT("&Exit the Program") );
         
     
         //Append menu items (About and Exit) to the "File" menu item
@@ -380,41 +380,41 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         
         // Create a Queue main-menu item
         wxMenu *menuQueue = new wxMenu;
-        menuQueue -> Append(ID_CreateQueue, wxT("&Create Queue"));
-        menuQueue -> Append(ID_AddData, wxT("&Add Data"));
-        menuQueue -> Append(ID_DisplayAllOfQueue, wxT("Display All"));
-        menuQueue -> Append(ID_ShowHead, wxT("Show Head"));
-        menuQueue -> Append(ID_ShowTail, wxT("Show Tail"));
-        menuQueue -> Append(ID_Dequeue, wxT("Dequeue"));
+        menuQueue -> Append(ID_CreateQueue, wxT("&Create a Queue"));
+        menuQueue -> Append(ID_AddData, wxT("&Add Data to Queue"));
+        menuQueue -> Append(ID_DisplayAllOfQueue, wxT("Display All of Queue"));
+        menuQueue -> Append(ID_ShowHead, wxT("Show Head of Queue"));
+        menuQueue -> Append(ID_ShowTail, wxT("Show Tail of Queue"));
+        menuQueue -> Append(ID_Dequeue, wxT("Dequeue from Queue"));
         
         // Create a Deque main-menu item
         wxMenu *menuDeque = new wxMenu;
         menuDeque -> Append(ID_CreateDeque, wxT("&Create Deque"));
-        menuDeque -> Append(ID_AddHead, wxT("&Add Head"));
-        menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All"));
-        menuDeque -> Append(ID_DequeShowHead, wxT("Show Head"));
-        menuDeque -> Append(ID_DequeShowTail, wxT("Show Tail"));
-        menuDeque -> Append(ID_DequeueHead, wxT("Dequeue Head"));
-        menuDeque -> Append(ID_DequeueTail, wxT("&Dequeue Tail"));
+        menuDeque -> Append(ID_AddHead, wxT("&Add to Head of Deque"));
+        menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All of the Deque"));
+        menuDeque -> Append(ID_DequeShowHead, wxT("Show Head of Deque"));
+        menuDeque -> Append(ID_DequeShowTail, wxT("Show Tail of Deque"));
+        menuDeque -> Append(ID_DequeueHead, wxT("Dequeue Head of Deque"));
+        menuDeque -> Append(ID_DequeueTail, wxT("&Dequeue Tail of Deque"));
         
         
         // Create a Priority Queue main-menu item
         wxMenu *menuPQueue = new wxMenu;
-        menuPQueue -> Append(ID_CreatePQ, wxT("&Create PQ"));
-        menuPQueue -> Append(ID_PQAddData, wxT("&Add Data"));
-        menuPQueue -> Append(ID_PQDisplayAll, wxT("Display All"));
-        menuPQueue -> Append(ID_PQShowHead, wxT("Show Head"));
-        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail"));
-        menuPQueue -> Append(ID_PQDequeue, wxT("Dequeue"));
+        menuPQueue -> Append(ID_CreatePQ, wxT("&Create a Priority Queue"));
+        menuPQueue -> Append(ID_PQAddData, wxT("&Add Data to Priority Queue"));
+        menuPQueue -> Append(ID_PQDisplayAll, wxT("Display All of Priority Queue"));
+        menuPQueue -> Append(ID_PQShowHead, wxT("Show Head of Priority Queue"));
+        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"));
+        menuPQueue -> Append(ID_PQDequeue, wxT("Dequeue from Priority Queue"));
         
         
         
         // Create a Stack main-menu item
         wxMenu *menuStack = new wxMenu;
-        menuStack -> Append(ID_CreateStack, wxT("Create Stack"));
-        menuStack -> Append(ID_Push, wxT("Push"));
-        menuStack -> Append(ID_Pop, wxT("Pop"));
-        menuStack -> Append(ID_StackDisplayAll, wxT("Display All"));
+        menuStack -> Append(ID_CreateStack, wxT("Create a Stack"));
+        menuStack -> Append(ID_Push, wxT("Push to Stack"));
+        menuStack -> Append(ID_Pop, wxT("Pop from Stack"));
+        menuStack -> Append(ID_StackDisplayAll, wxT("Display All of Stack"));
         
         // Create a BST main-menu item
         wxMenu *menuBST = new wxMenu;
@@ -591,7 +591,7 @@ void MyFrame::OnAbout ( wxCommandEvent& WXUNUSED ( event ) )
     {
         wxString msg;
     
-        msg.Printf(wxT("Hello and welcome to %s"), wxVERSION_STRING);
+        msg.Printf(wxT("Creator: Jelani Nicholls 414001005. Version: %s"), wxVERSION_STRING);
     
         wxMessageBox(msg, wxT("About Minimal"), wxOK | wxICON_INFORMATION, this);
     }
@@ -1161,21 +1161,23 @@ void MyFrame::OnCreateStack(wxCommandEvent& WXUNUSED ( event )) {
         inFile >> lName;
         inFile >> destination >> season;
         inFile >> booking;
-        cout << theID << endl;
+        cout << season << endl;
         
+        if (season == "Spring,") {
         theStack->push(theID, fName, lName, destination, season, booking);
         record = makeTheRecord(theID, fName, lName, destination, season, booking);
         record.append("\n");
+            wxString wxRecord(record.c_str(), wxConvUTF8);
+            mainEditBox->AppendText(wxRecord);
+            
+            record = "";
+        }
         
         
         
         
         
         
-        wxString wxRecord(record.c_str(), wxConvUTF8);
-        mainEditBox->AppendText(wxRecord);
-        
-        record = "";
         
         
         
