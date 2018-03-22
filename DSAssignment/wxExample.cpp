@@ -54,7 +54,7 @@ int to_int(string theString) {
 }
 
 string makeTheRecord(int ID, string fName, string lName, string destination, string season, string booking) {
-    string str = to_string(ID);
+    string str = to_String(ID);
     
     while (fName.size() < 20) {
         fName.append(" ");
@@ -657,7 +657,7 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
     inFile.open(currentDocPath.mb_str(), ios::in);
     
     if (!inFile) {
-        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
     //getline(inFile, fileLine);
@@ -677,6 +677,7 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
         
         wxString wxRecord(record.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxRecord);
+        
         
         record = "";
     }
@@ -737,7 +738,8 @@ void MyFrame::onDisplayAllOfQueue(wxCommandEvent& WXUNUSED ( event )) {
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
-        mainEditBox->AppendText(all);
+        mainEditBox->AppendText(wxRecords);
+        
     }
 }
 
@@ -797,7 +799,7 @@ void MyFrame::onCreateDeque(wxCommandEvent& WXUNUSED ( event )) {
     inFile.open(currentDocPath.mb_str(), ios::in);
     
     if (!inFile) {
-        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
     
@@ -925,7 +927,7 @@ void MyFrame::onDisplayAllOfDeque(wxCommandEvent& WXUNUSED (event )) {
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
-        mainEditBox->AppendText(all);
+        mainEditBox->AppendText(wxRecords);
     }
     
 }
@@ -1086,7 +1088,7 @@ void MyFrame::OnPQDisplayAll(wxCommandEvent& WXUNUSED (event )) {
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
-        mainEditBox->AppendText(all);
+        mainEditBox->AppendText(wxRecords);
     }
     
 }
@@ -1248,7 +1250,7 @@ void MyFrame::OnStackDisplayAll(wxCommandEvent& WXUNUSED (event)) {
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
-        mainEditBox->AppendText(all);
+        mainEditBox->AppendText(wxRecords);
     }
 }
 
