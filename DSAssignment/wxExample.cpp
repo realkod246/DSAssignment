@@ -23,6 +23,7 @@
 #include "pQueue.h"
 #include "Dialog.h"
 #include "stack.h"
+#include "BSTree.h"
 
 using namespace std;
 
@@ -30,7 +31,7 @@ Queue *theQueue = new Queue();
 Deque *theDeque = new Deque();
 PQueue *thePQ = new PQueue();
 stack *theStack = new stack();
-
+BSTree *theBST = new BSTree();
 
 string to_String(int integer) {
     stringstream ss;
@@ -153,6 +154,10 @@ class MyFrame: public wxFrame
     void OnPop(wxCommandEvent& event);
     void OnPush(wxCommandEvent& event);
     void OnStackDisplayAll(wxCommandEvent& event);
+    
+    // BST Functions
+    void onCreateBST(wxCommandEvent& event);
+    void onBSTinOrder(wxCommandEvent& event);
     
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
@@ -307,6 +312,9 @@ EVT_MENU (ID_Pop, MyFrame::OnPop)
 EVT_MENU (ID_Push, MyFrame::OnPush)
 EVT_MENU (ID_StackDisplayAll, MyFrame::OnStackDisplayAll )
 
+
+EVT_MENU ( ID_CreateBST,     MyFrame::onCreateBST     )
+//EVT_MENU ( ID_BSTInOrder,     MyFrame::onBSTinOrder     )
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -998,7 +1006,7 @@ void MyFrame::onCreatePQ(wxCommandEvent& WXUNUSED ( event )) {
     inFile.open(currentDocPath.mb_str(), ios::in);
     
     if (!inFile) {
-        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
     
@@ -1148,7 +1156,7 @@ void MyFrame::OnCreateStack(wxCommandEvent& WXUNUSED ( event )) {
     inFile.open(currentDocPath.mb_str(), ios::in);
     
     if (!inFile) {
-        mainEditBox->AppendText("\n\n\nAin't no data in here..\n\n");
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
     
@@ -1252,6 +1260,61 @@ void MyFrame::OnStackDisplayAll(wxCommandEvent& WXUNUSED (event)) {
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
+}
+
+
+//===================================================================================\\
+//=========== Definitions for the BST Functions =====================================\\
+//===================================================================================\\
+
+void MyFrame::onCreateBST(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    theBST -> ~BSTree();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
+        return;
+    }
+    
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << theID << endl;
+        
+        
+            theBST->insert(theID, fName, lName, destination, season, booking);
+            record = makeTheRecord(theID, fName, lName, destination, season, booking);
+            record.append("\n");
+            wxString wxRecord(record.c_str(), wxConvUTF8);
+            mainEditBox->AppendText(wxRecord);
+            
+            record = "";
+        
+    }
+    inFile.close();
 }
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )

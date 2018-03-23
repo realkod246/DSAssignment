@@ -33,6 +33,7 @@
 		653E565D205AC864001F4AF8 /* deque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deque.h; sourceTree = "<group>"; };
 		653E565E205AC864001F4AF8 /* LinkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkList.h; sourceTree = "<group>"; };
 		65EC15AA205AFB520072A126 /* Dialog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dialog.h; sourceTree = "<group>"; };
+		65F7D68E2065780000C20BD7 /* BSTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSTree.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +75,7 @@
 				653E5659205AC863001F4AF8 /* pQueue.h */,
 				653E565A205AC863001F4AF8 /* Queue.h */,
 				653E565B205AC863001F4AF8 /* stack.h */,
+				65F7D68E2065780000C20BD7 /* BSTree.h */,
 			);
 			path = DSAssignment;
 			sourceTree = "<group>";
