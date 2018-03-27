@@ -9,7 +9,7 @@
 #ifndef BSTree_h
 #define BSTree_h
 
-using namespace std;
+
 
 class BinarySearchNode {
 private:
@@ -25,11 +25,11 @@ public:
     BinarySearchNode* Right;
     
     // Constructors
-    BinarySearchNode() {ID = 0; fName = lName = destination = season = booking = ""; Right = Left = NULL;}
-    BinarySearchNode(int id, string first, string last, string dest, string sea, string book);
+    BinarySearchNode(void) {ID = 0; fName = lName = destination = season = booking = ""; Right = Left = NULL;}
+    BinarySearchNode(int Id, string first, string last, string dest, string sea, string book);
     
     // Mutators
-    void setID ( int id ) {ID = id;}
+    void setID ( int Id ) {ID = Id;}
     void setFName(string first ) {fName = first;}
     void setLName(string last ) {lName = last;}
     void setDestination(string dest ) {destination = dest;}
@@ -37,7 +37,7 @@ public:
     void setBooking(string book ) {booking = book;}
     
     // Accessors
-    int getID() {return ID;}
+    int getID(void) {return ID;}
     string getFName() {return fName;}
     string getLName() {return lName;}
     string getDestination() {return destination;}
@@ -45,13 +45,14 @@ public:
     string getBooking() {return booking;}
     
 }; //End of Definitions
-BinarySearchNode::BinarySearchNode(int id, string first, string last, string dest, string sea, string book) {
-    ID = id;
+BinarySearchNode::BinarySearchNode(int Id, string first, string last, string dest, string sea, string book) {
+    ID = Id;
     fName = first;
     lName = last;
     destination = dest;
     season = sea;
     booking = book;
+    Right=Left=NULL;
 }
 
 class BSTree {
@@ -71,8 +72,8 @@ public:
     ~BSTree() {root = NULL;}
     
     // Mutators
-    void insert(int id, string first, string last, string dest, string sea, string book) {root = insertHelper(root, id, first, last, dest, sea, book);}
-    void remove (int id) {root = deleteNode(root, id);}
+    void insert(int Id, string first, string last, string dest, string sea, string book) {root = insertHelper(root, Id, first, last, dest, sea, book);}
+    void remove (int Id) {root = deleteNode(root, Id);}
     string toString(int num);
     
     // Accessors
@@ -87,33 +88,33 @@ public:
     string showLevels ();
 };
 
-BinarySearchNode* BSTree::insertHelper(BinarySearchNode* ptr, int id, string first, string last, string dest, string sea, string book) {
+BinarySearchNode* BSTree::insertHelper(BinarySearchNode* ptr, int Id, string first, string last, string dest, string sea, string book) {
     if (ptr == NULL) {
-        ptr = new BinarySearchNode(id, first, last, dest, sea, book);
+        ptr = new BinarySearchNode(Id, first, last, dest, sea, book);
     }
     else {
-        if (id >= ptr->getID()) {
-            ptr->Right = insertHelper(ptr->Right, id, first, last, dest, sea, book);
+        if (Id >= ptr->getID()) {
+            ptr->Right = insertHelper(ptr->Right, Id, first, last, dest, sea, book);
         }
         else {
-            ptr->Left = insertHelper(ptr->Left, id, first, last, dest, sea, book);
+            ptr->Left = insertHelper(ptr->Left, Id, first, last, dest, sea, book);
         }
     }
     
     return ptr;
 }
 
-BinarySearchNode* BSTree::deleteNode(BinarySearchNode* ptr, int id) {
+BinarySearchNode* BSTree::deleteNode(BinarySearchNode* ptr, int Id) {
     BinarySearchNode* next;
     if (ptr == NULL) {
         return NULL;
     }
     else {
-        if (id > ptr->getID()) {
-            ptr->Right = deleteNode(ptr->Right, id);
+        if (Id > ptr->getID()) {
+            ptr->Right = deleteNode(ptr->Right, Id);
         }
-        else if (id < ptr->getID()) {
-            ptr->Left = deleteNode(ptr->Left, id);
+        else if (Id < ptr->getID()) {
+            ptr->Left = deleteNode(ptr->Left, Id);
         }
         else {
             if (ptr->Right != NULL) {
@@ -152,36 +153,135 @@ string BSTree::inOrderHelper(BinarySearchNode* ptr) {
         str.append("]\t  ");
         
         string FName = ptr->getFName();
-        while (FName.size() < 20) {
+       
             FName.append(" ");
-        }
+        
         str.append(FName);
         
         string LName = ptr->getLName();
-        while (LName.size() < 20) {
+        
             LName.append(" ");
-        }
+       
         str.append(LName);
         
         string theDestination = ptr->getDestination();
-        while (theDestination.size() < 20) {
+        
             theDestination.append(" ");
-        }
+        
         str.append(theDestination);
         
         string theSeason = ptr->getSeason();
-        while (theSeason.size() < 20) {
+     
             theSeason.append(" ");
-        }
+        
         str.append(theSeason);
         
         string theBooking = ptr->getBooking();
-        while (theBooking.size() < 20) {
+        
             theBooking.append(" ");
-        }
+        
         str.append(theBooking);
     }
     return str;
+}
+
+string BSTree::preOrderHelper(BinarySearchNode* ptr) {
+    string str = "";
+    
+    if ( ptr != NULL )
+    {
+        str.append( to_string( ptr->getID() ) );
+        str.append(" [");
+        str.append( getLeftID(ptr) );
+        str.append(", ");
+        str.append( getRightID(ptr) );
+        str.append("]\t   ");
+        
+        string fName = ptr->getFName();
+        
+            fName.append(" ");
+        
+        str.append( fName );
+        
+        string lName = ptr->getLName();
+        
+            lName.append(" ");
+        
+        str.append( lName );
+        
+        string theDestination = ptr->getDestination();
+        
+            theDestination.append(" ");
+        
+        str.append( theDestination );
+        
+        string theSeason = ptr->getSeason();
+        
+            theSeason.append(" ");
+        
+        
+        string theBooking = ptr->getBooking();
+        
+            theBooking.append(" ");
+        
+        
+        str.append( "\n");
+        
+        str.append( preOrderHelper(ptr->Left) );
+        str.append( preOrderHelper(ptr->Right) );
+    }
+    return str;
+}
+
+string BSTree::postOrderHelper(BinarySearchNode* ptr) {
+    string str = "";
+    
+    if ( ptr != NULL )
+    {
+        str.append( postOrderHelper(ptr->Left) );
+        str.append( postOrderHelper(ptr->Right) );
+       
+        str.append( to_string( ptr->getID() ) );
+        str.append(" [");
+        str.append( getLeftID(ptr) );
+        str.append(", ");
+        str.append( getRightID(ptr) );
+        str.append("]\t   ");
+        
+        string fName = ptr->getFName();
+        
+        fName.append(" ");
+        
+        str.append( fName );
+        
+        string lName = ptr->getLName();
+        
+        lName.append(" ");
+        
+        str.append( lName );
+        
+        string theDestination = ptr->getDestination();
+        
+        theDestination.append(" ");
+        
+        str.append( theDestination );
+        
+        string theSeason = ptr->getSeason();
+        
+        theSeason.append(" ");
+        
+        
+        string theBooking = ptr->getBooking();
+        
+        theBooking.append(" ");
+        
+        
+        str.append( "\n");
+        
+        
+    }
+    return str;
+    
 }
 
 string BSTree::toString(int num) {

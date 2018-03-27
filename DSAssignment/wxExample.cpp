@@ -157,7 +157,11 @@ class MyFrame: public wxFrame
     
     // BST Functions
     void onCreateBST(wxCommandEvent& event);
-    void onBSTinOrder(wxCommandEvent& event);
+    void onAddDataBST(wxCommandEvent& event);
+    void onBSTDeleteData(wxCommandEvent& event);
+    void onBSTInorder(wxCommandEvent& event);
+    void onBSTPreorder(wxCommandEvent& event);
+    void onBSTPostorder(wxCommandEvent& event);
     
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
@@ -229,7 +233,7 @@ enum
             ID_StackDisplayAll,
             ID_CreateBST,
             ID_BSTAddData,
-            ID_DeleteData,
+            ID_BSTDeleteData,
             ID_BSTInOrder,
             ID_BSTPreOrder,
             ID_BSTPostOrder,
@@ -314,7 +318,12 @@ EVT_MENU (ID_StackDisplayAll, MyFrame::OnStackDisplayAll )
 
 
 EVT_MENU ( ID_CreateBST,     MyFrame::onCreateBST     )
-//EVT_MENU ( ID_BSTInOrder,     MyFrame::onBSTinOrder     )
+EVT_MENU(ID_BSTAddData, MyFrame::onAddDataBST)
+EVT_MENU(ID_BSTDeleteData, MyFrame::onBSTDeleteData)
+EVT_MENU(ID_BSTInOrder, MyFrame::onBSTInorder)
+EVT_MENU(ID_BSTPreOrder, MyFrame::onBSTPreorder)
+EVT_MENU(ID_BSTPostOrder, MyFrame::onBSTPostorder)
+
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -428,7 +437,7 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         wxMenu *menuBST = new wxMenu;
         menuBST -> Append(ID_CreateBST, wxT("Create BST"));
         menuBST -> Append(ID_AddData, wxT("Add Data"));
-        menuBST -> Append(ID_DeleteData, wxT("Delete Data"));
+        menuBST -> Append(ID_BSTDeleteData, wxT("Delete Data"));
         menuBST -> Append(ID_BSTInOrder, wxT("Inorder"));
         menuBST -> Append(ID_BSTPreOrder, wxT("Preorder"));
         menuBST -> Append(ID_BSTPostOrder, wxT("Postorder"));
@@ -1317,8 +1326,102 @@ void MyFrame::onCreateBST(wxCommandEvent& WXUNUSED(event)) {
     inFile.close();
 }
 
-void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) )
+void MyFrame::onAddDataBST(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        theBST -> insert(ID, fName, lName, destination, season, booking);
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+
+void MyFrame::onBSTDeleteData(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+}
+
+void MyFrame::onBSTInorder(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theBST->inOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Binary Search Tree is empty!\n"));
+    else
     {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying In-order Traversal of Binary Search Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onBSTPreorder(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theBST->preOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Binary Search Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Pre-order Traversal of Binary Search Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    
+}
+}
+
+void MyFrame::onBSTPostorder(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theBST->postOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Binary Search Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Post-order Traversal of Binary Search Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+}
+}
+
+void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {
         wxMessageBox(wxT("HELP!!!"), wxT("Minimal Help"), 
                      wxOK | wxCANCEL | wxICON_QUESTION, this);
     }
