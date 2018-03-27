@@ -181,6 +181,8 @@ string BSTree::inOrderHelper(BinarySearchNode* ptr) {
             theBooking.append(" ");
         
         str.append(theBooking);
+        str.append("\n");
+        str.append(inOrderHelper(ptr->Right));
     }
     return str;
 }
