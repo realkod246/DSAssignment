@@ -685,8 +685,8 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
         getline(ss, record, ' ');
         inFile >> theID;
         inFile.ignore(',', '\t');
-        inFile >> fName >> lName;
-        inFile >> destination >> season >> booking;
+        inFile >> fName >> lName >> destination;
+        inFile >> season >> booking;
         cout << season<< endl;
         theQueue->enqueue(theID, fName, lName, destination, season, booking);
         record = makeTheRecord(theID, fName, lName, destination, season, booking);
