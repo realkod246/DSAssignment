@@ -24,6 +24,7 @@
 #include "Dialog.h"
 #include "stack.h"
 #include "BSTree.h"
+#include "AVLTree.h"
 
 using namespace std;
 
@@ -682,12 +683,12 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
         getline(inFile, fileLine, '\n');
         
         istringstream ss(fileLine);
-        getline(ss, record, ' ');
+        getline(ss, record, ',');
         inFile >> theID;
+        //cout <<  << endl;
         inFile.ignore(',', '\t');
         inFile >> fName >> lName >> destination;
         inFile >> season >> booking;
-        cout << season<< endl;
         theQueue->enqueue(theID, fName, lName, destination, season, booking);
         record = makeTheRecord(theID, fName, lName, destination, season, booking);
         record.append("\n");

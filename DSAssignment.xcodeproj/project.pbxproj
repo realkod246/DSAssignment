@@ -26,6 +26,7 @@
 		651CF7232049C3FC005251C7 /* DSAssignment */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DSAssignment; sourceTree = BUILT_PRODUCTS_DIR; };
 		651CF7262049C3FC005251C7 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		651CF72D2049C5CD005251C7 /* wxExample.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = wxExample.cpp; sourceTree = "<group>"; };
+		651FFCE5206BE2F800578232 /* AVLTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVLTree.h; sourceTree = "<group>"; };
 		653E5659205AC863001F4AF8 /* pQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pQueue.h; sourceTree = "<group>"; };
 		653E565A205AC863001F4AF8 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
 		653E565B205AC863001F4AF8 /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
@@ -75,6 +76,7 @@
 				653E5659205AC863001F4AF8 /* pQueue.h */,
 				653E565A205AC863001F4AF8 /* Queue.h */,
 				653E565B205AC863001F4AF8 /* stack.h */,
+				651FFCE5206BE2F800578232 /* AVLTree.h */,
 				65F7D68E2065780000C20BD7 /* BSTree.h */,
 			);
 			path = DSAssignment;
