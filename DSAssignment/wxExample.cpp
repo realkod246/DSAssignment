@@ -33,6 +33,7 @@ Deque *theDeque = new Deque();
 PQueue *thePQ = new PQueue();
 stack *theStack = new stack();
 BSTree *theBST = new BSTree();
+AVLTree *theAVL = new AVLTree();
 
 string to_String(int integer) {
     stringstream ss;
@@ -164,6 +165,13 @@ class MyFrame: public wxFrame
     void onBSTPreorder(wxCommandEvent& event);
     void onBSTPostorder(wxCommandEvent& event);
     
+    //AVL Functions
+    void onCreateAVL(wxCommandEvent& event);
+    void onAddDataAVL(wxCommandEvent& event);
+    void onAVLDeleteData(wxCommandEvent& event);
+    void onAVLInorder(wxCommandEvent& event);
+    void onAVLPreorder(wxCommandEvent& event);
+    void onAVLPostorder(wxCommandEvent& event);
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
     
@@ -317,7 +325,7 @@ EVT_MENU (ID_Pop, MyFrame::OnPop)
 EVT_MENU (ID_Push, MyFrame::OnPush)
 EVT_MENU (ID_StackDisplayAll, MyFrame::OnStackDisplayAll )
 
-
+//Events for BST
 EVT_MENU ( ID_CreateBST,     MyFrame::onCreateBST     )
 EVT_MENU(ID_BSTAddData, MyFrame::onAddDataBST)
 EVT_MENU(ID_BSTDeleteData, MyFrame::onBSTDeleteData)
@@ -325,19 +333,18 @@ EVT_MENU(ID_BSTInOrder, MyFrame::onBSTInorder)
 EVT_MENU(ID_BSTPreOrder, MyFrame::onBSTPreorder)
 EVT_MENU(ID_BSTPostOrder, MyFrame::onBSTPostorder)
 
+//Events for AVL
+EVT_MENU ( ID_CreateAVL,     MyFrame::onCreateAVL     )
+//EVT_MENU(ID_AVLAddData, MyFrame::onAddDataAVL)
+//EVT_MENU(ID_AVLDeleteData, MyFrame::onAVLDeleteData)
+//EVT_MENU(ID_AVLInOrder, MyFrame::onAVLInorder)
+//EVT_MENU(ID_AVLPreOrder, MyFrame::onAVLPreorder)
+//EVT_MENU(ID_AVLPostOrder, MyFrame::onAVLPostorder)
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
 
-        //EVT_MENU ( ID_Queue, MyFrame::onQueue )
-        //EVT_MENU ( ID_Deque, MyFrame::onDeque )
-        //EVT_MENU ( ID_PQueue, MyFrame::onPQueue )
-        //EVT_MENU ( ID_Stack, MyFrame::onStack )
-        //EVT_MENU ( ID_BST, MyFrame::onBST )
-        //EVT_MENU ( ID_AVLTree, MyFrame::onAVLTree )
-        //EVT_MENU ( ID_Heap, MyFrame::onHeap )
-        //EVT_MENU ( ID_RBTree, MyFrame::onRBTree )
-        //EVT_MENU ( ID_Splay, MyFrame::onSplay )
+
 END_EVENT_TABLE () 
 
 
@@ -678,7 +685,7 @@ void MyFrame::onCreateQueue(wxCommandEvent& WXUNUSED ( event )) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    //getline(inFile, fileLine);
+    getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -820,7 +827,7 @@ void MyFrame::onCreateDeque(wxCommandEvent& WXUNUSED ( event )) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    
+    getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -1019,7 +1026,7 @@ void MyFrame::onCreatePQ(wxCommandEvent& WXUNUSED ( event )) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    
+    //getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -1169,7 +1176,7 @@ void MyFrame::OnCreateStack(wxCommandEvent& WXUNUSED ( event )) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    
+    getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -1300,7 +1307,7 @@ void MyFrame::onCreateBST(wxCommandEvent& WXUNUSED(event)) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    
+    getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -1420,6 +1427,67 @@ void MyFrame::onBSTPostorder(wxCommandEvent& (event)) {
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying Post-order Traversal of Binary Search Tree*****\n\n"));
         mainEditBox->AppendText(wxRecords);
 }
+}
+
+
+//===================================================================================\\
+//=========== Definitions for the AVL Functions =====================================\\
+//===================================================================================\\
+
+void MyFrame::onCreateAVL(wxCommandEvent&  WXUNUSED (event)) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    theAVL -> ~AVLTree();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
+        return;
+    }
+    getline(inFile, fileLine, '\n');
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        
+        
+        if (season == "Fall,") {
+        theAVL->insert(theID, fName, lName, destination, season, booking);
+            
+        }
+        if (season == "Fall,") {
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        cout << theID << endl;
+        record.append("\n");
+        }
+        
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+    }
+    inFile.close();
 }
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {
