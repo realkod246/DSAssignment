@@ -282,7 +282,7 @@ string AVLTree::preOrderHelper(AVLNode *ptr) {
     
     if ( ptr != NULL )
     {
-        theString.append( to_string( ptr->getID() ) );
+        theString.append( to_String( ptr->getID() ) );
         theString.append(" [");
         theString.append( getLeftID(ptr) );
         theString.append(", ");
@@ -290,36 +290,33 @@ string AVLTree::preOrderHelper(AVLNode *ptr) {
         theString.append("]\t   ");
         
         string fName = ptr->getFName();
-        while (fName.size() < 20)
-        {
+        
             fName.append(" ");
-        }
+        
         theString.append( fName );
         
         string lName = ptr->getLName();
-        while (lName.size() < 20)
-        {
+        
             lName.append(" ");
-        }
+        
         theString.append( lName );
         
         string theDestination = ptr->getDestination();
-        while (theDestination.size() < 20)
-        {
+        
             theDestination.append(" ");
-        }
+        
         theString.append( theDestination );
         
         string theSeason = ptr->getSeason();
-        while (theSeason.size() < 20) {
+        
             theSeason.append("");
-        }
+        
         theString.append(theSeason);
         
-        string theBooking= ptr->getBooking();
-        while (theBooking.size() < 20) {
+        string theBooking = ptr->getBooking();
+        
             theBooking.append("");
-        }
+        
         theString.append(theBooking);
         
         

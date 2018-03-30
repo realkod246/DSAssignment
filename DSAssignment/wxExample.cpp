@@ -335,11 +335,11 @@ EVT_MENU(ID_BSTPostOrder, MyFrame::onBSTPostorder)
 
 //Events for AVL
 EVT_MENU ( ID_CreateAVL,     MyFrame::onCreateAVL     )
-//EVT_MENU(ID_AVLAddData, MyFrame::onAddDataAVL)
-//EVT_MENU(ID_AVLDeleteData, MyFrame::onAVLDeleteData)
-//EVT_MENU(ID_AVLInOrder, MyFrame::onAVLInorder)
-//EVT_MENU(ID_AVLPreOrder, MyFrame::onAVLPreorder)
-//EVT_MENU(ID_AVLPostOrder, MyFrame::onAVLPostorder)
+EVT_MENU(ID_AVLAddData, MyFrame::onAddDataAVL)
+EVT_MENU(ID_AVLDeleteData, MyFrame::onAVLDeleteData)
+EVT_MENU(ID_AVLInOrder, MyFrame::onAVLInorder)
+EVT_MENU(ID_AVLPreOrder, MyFrame::onAVLPreorder)
+EVT_MENU(ID_AVLPostOrder, MyFrame::onAVLPostorder)
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -1026,7 +1026,7 @@ void MyFrame::onCreatePQ(wxCommandEvent& WXUNUSED ( event )) {
         mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
         return;
     }
-    //getline(inFile, fileLine, '\n');
+    getline(inFile, fileLine, '\n');
     while (!inFile.eof()) {
         getline(inFile, fileLine, '\n');
         
@@ -1488,6 +1488,110 @@ void MyFrame::onCreateAVL(wxCommandEvent&  WXUNUSED (event)) {
         
     }
     inFile.close();
+}
+
+void MyFrame::onAddDataAVL(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for AVL"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        if (season == "Fall") {
+            mainEditBox->AppendText(getRecord(data));
+        }
+        if (season == "Fall") {
+        theAVL -> insert(ID, fName, lName, destination, season, booking);
+        }
+        else {
+            mainEditBox->AppendText(wxT("The season must be Fall!\n"));
+        }
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+    
+}
+
+void MyFrame::onAVLDeleteData(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+}
+
+void MyFrame::onAVLInorder(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theAVL->inOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe AVL Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying In-order Traversal of AVL Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onAVLPreorder(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+    
+    
+    //Get the data
+    string records = theAVL->preOrder();
+    
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe AVL Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Pre-order Traversal of AVL Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+    
+}
+
+void MyFrame::onAVLPostorder(wxCommandEvent& (event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theAVL->postOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe AVL Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Post-order Traversal of AVL Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
 }
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {
