@@ -81,7 +81,7 @@ Dialog::Dialog ( const wxString& title, const wxPoint& pos,  const wxSize& size)
     season.Add(wxT("Sprint"));
     season.Add(wxT("Summer"));
     
-    seasonCombo = new wxComboBox( panel, -1, wxT("COMP"), wxPoint(90, 123), wxSize(120, -1), season, wxCB_READONLY);
+    seasonCombo = new wxComboBox( panel, -1, wxT("Winter"), wxPoint(90, 123), wxSize(120, -1), season, wxCB_READONLY);
     
     
     

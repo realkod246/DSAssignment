@@ -192,7 +192,7 @@ string BSTree::preOrderHelper(BinarySearchNode* ptr) {
     
     if ( ptr != NULL )
     {
-        str.append( to_string( ptr->getID() ) );
+        str.append( toString( ptr->getID() ) );
         str.append(" [");
         str.append( getLeftID(ptr) );
         str.append(", ");
@@ -243,7 +243,7 @@ string BSTree::postOrderHelper(BinarySearchNode* ptr) {
         str.append( postOrderHelper(ptr->Left) );
         str.append( postOrderHelper(ptr->Right) );
        
-        str.append( to_string( ptr->getID() ) );
+        str.append( toString( ptr->getID() ) );
         str.append(" [");
         str.append( getLeftID(ptr) );
         str.append(", ");

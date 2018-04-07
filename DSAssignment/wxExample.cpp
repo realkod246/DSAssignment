@@ -25,6 +25,8 @@
 #include "stack.h"
 #include "BSTree.h"
 #include "AVLTree.h"
+#include "Splay.h"
+#include "Heap.h"
 
 using namespace std;
 
@@ -34,6 +36,8 @@ PQueue *thePQ = new PQueue();
 stack *theStack = new stack();
 BSTree *theBST = new BSTree();
 AVLTree *theAVL = new AVLTree();
+Heap *theHeap = new Heap();
+Splay *theSplay = new Splay();
 
 string to_String(int integer) {
     stringstream ss;
@@ -175,6 +179,15 @@ class MyFrame: public wxFrame
     
     void OnHelp(wxCommandEvent& event);     //handle for Help function
     
+    // Binary Heap Functions
+    void onCreateHeap(wxCommandEvent& event);
+    void onHeapAddData(wxCommandEvent& event);
+    void onHeapDeleteData(wxCommandEvent& event);
+    void onHeapDisplayAll(wxCommandEvent& event);
+    void onSort(wxCommandEvent& event);
+    
+    // Splay Functions
+    
     wxString currentDocPath;
     wxTextCtrl* mainEditBox;
     wxTextCtrl* filenameTextBox;
@@ -216,12 +229,14 @@ enum
             ID_RBTree,
             ID_Splay,
             ID_Set,
+            
             ID_CreateQueue,
             ID_AddData,
             ID_DisplayAllOfQueue,
             ID_ShowHead,
             ID_ShowTail,
             ID_Dequeue,
+            
             ID_CreateDeque,
             ID_AddHead,
             ID_AddTail,
@@ -230,45 +245,53 @@ enum
             ID_DequeShowTail,
             ID_DequeueHead,
             ID_DequeueTail,
+            
             ID_CreatePQ,
             ID_PQAddData,
             ID_PQDisplayAll,
             ID_PQShowTail,
             ID_PQShowHead,
             ID_PQDequeue,
+            
             ID_CreateStack,
             ID_Push,
             ID_Pop,
             ID_StackDisplayAll,
+            
             ID_CreateBST,
             ID_BSTAddData,
             ID_BSTDeleteData,
             ID_BSTInOrder,
             ID_BSTPreOrder,
             ID_BSTPostOrder,
+            
             ID_CreateAVL,
             ID_AVLAddData,
             ID_AVLDeleteData,
             ID_AVLInOrder,
             ID_AVLPreOrder,
             ID_AVLPostOrder,
+            
             ID_CreateHeap,
             ID_HeapAddData,
             ID_HeapDeleteData,
             ID_HeapDisplayAll,
             ID_SortHeap,
+            
             ID_CreateRBT,
             ID_RBTAddData,
             ID_RBTDeleteData,
             ID_RBTInOrder,
             ID_RBTPreOrder,
             ID_RBTPostOrder,
+            
             ID_CreateSplay,
             ID_SplayAddData,
             ID_SplayDeleteData,
             ID_SplayInOrder,
             ID_SplayPreOrder,
             ID_SplayPostOrder,
+            
             ID_CreateSets,
             ID_SetsAddData,
             ID_DisplaySetA,
@@ -340,6 +363,13 @@ EVT_MENU(ID_AVLDeleteData, MyFrame::onAVLDeleteData)
 EVT_MENU(ID_AVLInOrder, MyFrame::onAVLInorder)
 EVT_MENU(ID_AVLPreOrder, MyFrame::onAVLPreorder)
 EVT_MENU(ID_AVLPostOrder, MyFrame::onAVLPostorder)
+
+//Events for Heap
+EVT_MENU ( ID_CreateHeap,     MyFrame::onCreateHeap     )
+EVT_MENU ( ID_HeapAddData,    MyFrame::onHeapAddData    )
+EVT_MENU ( ID_HeapDeleteData, MyFrame::onHeapDeleteData )
+EVT_MENU ( ID_HeapDisplayAll, MyFrame::onHeapDisplayAll )
+EVT_MENU ( ID_SortHeap,           MyFrame::onSort           )
 
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
@@ -1339,7 +1369,7 @@ void MyFrame::onAddDataBST(wxCommandEvent& WXUNUSED (event)) {
     
     
     vacationRecord data;
-    Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Binary Search Tree"),
                                     wxPoint(200,200), wxSize(420,420) );
     if (datadialog->ShowModal() == wxID_OK) {
         data.ID = datadialog-> idEditBox->GetValue();
@@ -1590,6 +1620,148 @@ void MyFrame::onAVLPostorder(wxCommandEvent& (event)) {
         
         //Output the data
         mainEditBox->AppendText(wxT("\n\t\t*****Displaying Post-order Traversal of AVL Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+//===================================================================================//
+//=========== Definitions for the Binary Heap Functions =============================//
+//===================================================================================//
+
+void MyFrame::onCreateHeap(wxCommandEvent& event)
+{
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    string emptyHeap = theHeap->sortMinHeap();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
+        return;
+    }
+    getline(inFile, fileLine, '\n');
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        
+        
+        if (season == "Summer,") {
+            theHeap->addMinHeap(theID, fName, lName, destination, season, booking);
+        }
+        if (season == "Summer,") {
+            record = makeTheRecord(theID, fName, lName, destination, season, booking);
+            record.append("\n");
+        }
+        
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+    }
+    inFile.close();
+}
+
+void MyFrame::onHeapAddData(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Heap"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string season = string(data.season.mb_str());
+        string booking = string(data.booking.mb_str());
+        
+        
+        mainEditBox->AppendText(getRecord(data));
+        if (season == "Summer") {
+            theHeap->addMinHeap(ID, fName, lName, destination, season, booking);
+        }
+        else {
+             mainEditBox->AppendText(wxT("\n\n\t\tPlease enter Summer travels only.\n"));
+        }
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+void MyFrame::onHeapDeleteData(wxCommandEvent& WXUNUSED (event)) {
+    // Implement
+}
+
+void MyFrame::onHeapDisplayAll(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    // Get data
+    string records = theHeap->displayHeap();
+    
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Binary Heap Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Binary Heap Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onSort(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    // Get data
+    string records = theHeap->sortMinHeap();
+    
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Binary Heap Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Sorted Records of the Binary Heap Tree*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
 }
