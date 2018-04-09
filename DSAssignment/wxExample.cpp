@@ -41,6 +41,8 @@ AVLTree *theAVL = new AVLTree();
 Heap *theHeap = new Heap();
 RBTree *theRB = new RBTree();
 Splay *theSplay = new Splay();
+Set *SetA = new Set();
+Set *SetB = new Set();
 
 string to_String(int integer) {
     stringstream ss;
@@ -205,6 +207,16 @@ class MyFrame: public wxFrame
     void onSplayInorder(wxCommandEvent& event);
     void onSplayPreorder(wxCommandEvent& event);
     void onSplayPostorder(wxCommandEvent& event);
+    
+    // Set Functions
+    void onCreateSets(wxCommandEvent& event);
+    void onSetAddData(wxCommandEvent& event);
+    void onDisplaySetA(wxCommandEvent& event);
+    void onDisplaySetB(wxCommandEvent& event);
+    void onDisplayIntersect(wxCommandEvent& event);
+    void onDisplayUnion(wxCommandEvent& event);
+    void onDelFromSetA(wxCommandEvent& event);
+    void onDelFromSetB(wxCommandEvent& event);
     
     wxString currentDocPath;
     wxTextCtrl* mainEditBox;
@@ -406,6 +418,16 @@ EVT_MENU(ID_SplayPreOrder, MyFrame::onSplayPreorder)
 EVT_MENU(ID_SplayPostOrder, MyFrame::onSplayPostorder)
 
 
+// Events For Set Functions
+EVT_MENU(ID_CreateSets, MyFrame::onCreateSets)
+EVT_MENU(ID_SetsAddData, MyFrame::onSetAddData)
+EVT_MENU(ID_DisplaySetA, MyFrame::onDisplaySetA)
+EVT_MENU(ID_DisplaySetB, MyFrame::onDisplaySetB)
+EVT_MENU(ID_DisplayInterception, MyFrame::onDisplayIntersect)
+EVT_MENU(ID_DisplayUnion, MyFrame::onDisplayUnion)
+
+
+
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
 
@@ -452,7 +474,7 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         menuFile->AppendSeparator();
         menuFile->Append( ID_Save,        wxT("Save File"      ), wxT("&Save Opened File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("&Save Display as a New File") );
+        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("Sa&ve Display as a New File") );
         menuFile->AppendSeparator();
         menuFile->Append( ID_About, wxT("&About the Creator") );
         menuFile->AppendSeparator();
@@ -479,19 +501,19 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         
         // Create a Deque main-menu item
         wxMenu *menuDeque = new wxMenu;
-        menuDeque -> Append(ID_CreateDeque, wxT("&Create Deque"));
-        menuDeque -> Append(ID_AddHead, wxT("&Add to Head of Deque"));
+        menuDeque -> Append(ID_CreateDeque, wxT("Create &Deque"));
+        menuDeque -> Append(ID_AddHead, wxT("Add to Head of Deque"));
         menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All of the Deque"));
         menuDeque -> Append(ID_DequeShowHead, wxT("Show Head of Deque"));
         menuDeque -> Append(ID_DequeShowTail, wxT("Show Tail of Deque"));
         menuDeque -> Append(ID_DequeueHead, wxT("Dequeue Head of Deque"));
-        menuDeque -> Append(ID_DequeueTail, wxT("&Dequeue Tail of Deque"));
+        menuDeque -> Append(ID_DequeueTail, wxT("Dequeue Tail of Deque"));
         
         
         // Create a Priority Queue main-menu item
         wxMenu *menuPQueue = new wxMenu;
-        menuPQueue -> Append(ID_CreatePQ, wxT("&Create a Priority Queue"));
-        menuPQueue -> Append(ID_PQAddData, wxT("&Add Data to Priority Queue"));
+        menuPQueue -> Append(ID_CreatePQ, wxT("Create a &Priority Queue"));
+        menuPQueue -> Append(ID_PQAddData, wxT("Add Data to Priority Queue"));
         menuPQueue -> Append(ID_PQDisplayAll, wxT("Display All of Priority Queue"));
         menuPQueue -> Append(ID_PQShowHead, wxT("Show Head of Priority Queue"));
         menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"));
@@ -2112,6 +2134,201 @@ void MyFrame::onSplayPostorder(wxCommandEvent& WXUNUSED(event)) {
     }
     
 }
+
+//===================================================================================\\
+//=========== Definitions for SetsFunctions =========================================\\
+//===================================================================================\\
+
+void MyFrame::onCreateSets(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    SetA = new Set();
+    SetB = new Set();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
+        return;
+    }
+    getline(inFile, fileLine, '\n');
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << theID << endl;
+        
+        //if (destination == "Trinidad," || destination == "Guyana," || destination == "St" || destination == "Belize," || destination == "Antigua," || destination == "Cayman" || destination == "Grenada," || destination == "Antigua," || destination == "Dominica,") {
+        if (booking == "Internet") {
+            
+        
+            SetA->add(theID, fName, lName, destination, season, booking);
+        }
+        else {
+            SetB->add(theID, fName, lName, destination, season, booking);
+        }
+        
+        
+        
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        record.append("\n");
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+    }
+    inFile.close();
+}
+
+
+void MyFrame::onSetAddData(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Splay Tree"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        if (destination == "Trinidad," || destination == "Guyana," || destination == "St" || destination == "Belize," || destination == "Antigua," || destination == "Cayman" || destination == "Grenada," || destination == "Antigua," || destination == "Dominica") {
+            SetA->add(ID, fName, lName, destination, season, booking);
+        }
+        else {
+            SetB->add(ID, fName, lName, destination, season, booking);
+        }
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
+
+void MyFrame::onDisplaySetA(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    
+    string all = SetA->displaySet();
+    string record = all;
+    if (all.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Set A is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records Set A*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onDisplaySetB(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    
+    string all = SetB->displaySet();
+    string record = all;
+    if (all.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Set B is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(all.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records Set B*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onDisplayIntersect(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    Heap in = SetB->intersectionSet(SetA, SetB);
+    
+    string record = in.displayHeap();
+    if (record.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tEither Set A or Set B is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records A Intercept B*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onDisplayUnion(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    Heap in = SetB->unionSet(SetA, SetB);
+    
+    string record = in.displayHeap();
+    if (record.size() == 0)
+        mainEditBox->AppendText(wxT("\n\n\t\tEither Set A or Set B is empty!\n"));
+    else
+    {
+        
+        
+        
+        
+        wxString wxRecords(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records A Union B*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onDelFromSetA(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+}
+
+void MyFrame::onDelFromSetB(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+}
+
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {
         wxMessageBox(wxT("HELP!!!"), wxT("Minimal Help"), 
                      wxOK | wxCANCEL | wxICON_QUESTION, this);

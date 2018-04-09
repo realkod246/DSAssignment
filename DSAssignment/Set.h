@@ -56,7 +56,7 @@ Heap Set::intersectionSet(Set* setA,  Set* setB)
     
     for (int x = 1; x < setA->data.Size(); x++)
     {
-        if (setA->data.getSeasonAt(x) == "Winter"   )
+        if (setA->data.getSeasonAt(x) == "Winter,"   )
         {
             checkA.add( setA->data.getIDAt(x), setA->data.getFnameAt(x),
                        setA->data.getLnameAt(x), setA->data.getDestinationAt(x),
@@ -66,7 +66,7 @@ Heap Set::intersectionSet(Set* setA,  Set* setB)
     }
     for (int x = 1; x < setB->data.Size(); x++)
     {
-        if (setB->data.getSeasonAt(x) == "Winter")
+        if (setB->data.getSeasonAt(x) == "Winter,")
         {
             checkB.add( setB->data.getIDAt(x), setB->data.getFnameAt(x),
                        setB->data.getLnameAt(x), setB->data.getDestinationAt(x),
@@ -90,8 +90,12 @@ Heap Set::intersectionSet(Set* setA,  Set* setB)
                 }
             }
         }
-        return Iset.data;
+        
         
     }
+    return Iset.data;
+}
+
+
 
 #endif /* Set_h */
