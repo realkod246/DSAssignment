@@ -1030,7 +1030,7 @@ void MyFrame::onDisplayAllOfDeque(wxCommandEvent& WXUNUSED (event )) {
     string all = theDeque->display();
     string record = all;
     if (all.size() == 0)
-        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Deque is empty!\n"));
     else
     {
         
@@ -1038,7 +1038,7 @@ void MyFrame::onDisplayAllOfDeque(wxCommandEvent& WXUNUSED (event )) {
         
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
-        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the DeQueue*****\n\n"));
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Deque*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
     
@@ -1305,7 +1305,7 @@ mainEditBox->Clear();
 
 
 vacationRecord data;
-Dialog *datadialog = new Dialog( wxT("Data Entry for Queue"),
+Dialog *datadialog = new Dialog( wxT("Data Entry for Stack"),
                                 wxPoint(200,200), wxSize(420,420) );
 if (datadialog->ShowModal() == wxID_OK) {
     data.ID = datadialog-> idEditBox->GetValue();
@@ -1930,6 +1930,7 @@ void MyFrame::onRBTAddData(wxCommandEvent& WXUNUSED(event)) {
 }
 
 void MyFrame::onRBTDeleteData(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
     
 }
 
@@ -2136,7 +2137,7 @@ void MyFrame::onSplayPostorder(wxCommandEvent& WXUNUSED(event)) {
 }
 
 //===================================================================================\\
-//=========== Definitions for SetsFunctions =========================================\\
+//=========== Definitions for Sets Functions =========================================\\
 //===================================================================================\\
 
 void MyFrame::onCreateSets(wxCommandEvent& WXUNUSED(event)) {
@@ -2206,7 +2207,7 @@ void MyFrame::onSetAddData(wxCommandEvent& WXUNUSED(event)) {
     
     
     vacationRecord data;
-    Dialog *datadialog = new Dialog( wxT("Data Entry for Splay Tree"),
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Set Tree"),
                                     wxPoint(200,200), wxSize(420,420) );
     if (datadialog->ShowModal() == wxID_OK) {
         data.ID = datadialog-> idEditBox->GetValue();
