@@ -93,7 +93,7 @@ BinarySearchNode* BSTree::insertHelper(BinarySearchNode* ptr, int Id, string fir
         ptr = new BinarySearchNode(Id, first, last, dest, sea, book);
     }
     else {
-        if (Id >= ptr->getID()) {
+        if (Id > ptr->getID()) {
             ptr->Right = insertHelper(ptr->Right, Id, first, last, dest, sea, book);
         }
         else {

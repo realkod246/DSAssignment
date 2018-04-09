@@ -396,6 +396,15 @@ EVT_MENU(ID_RBTInOrder, MyFrame::onRBTInorder)
 EVT_MENU(ID_RBTPreOrder, MyFrame::onRBTPreorder)
 EVT_MENU(ID_RBTPostOrder, MyFrame::onRBTPostorder)
 
+//Events for Splay Tree
+EVT_MENU(ID_CreateSplay, MyFrame::onCreateSplay)
+EVT_MENU(ID_SplayAddData, MyFrame::onSplayAddData)
+EVT_MENU(ID_SplayDeleteData, MyFrame::onSplayDeleteData)
+EVT_MENU(ID_SplayInOrder, MyFrame::onSplayInorder)
+EVT_MENU(ID_SplayPreOrder, MyFrame::onSplayPreorder)
+EVT_MENU(ID_SplayPostOrder, MyFrame::onSplayPostorder)
+
+
 EVT_MENU ( ID_About, MyFrame::OnAbout )
 EVT_MENU ( ID_Help, MyFrame::OnHelp )
 
@@ -1006,7 +1015,7 @@ void MyFrame::onDisplayAllOfDeque(wxCommandEvent& WXUNUSED (event )) {
         
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
-        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the DeQueue*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
     
@@ -1159,7 +1168,7 @@ void MyFrame::OnPQDisplayAll(wxCommandEvent& WXUNUSED (event )) {
     string all = thePQ->display();
     string record = all;
     if (all.size() == 0)
-        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Priority Queue is empty!\n"));
     else
     {
         
@@ -1167,7 +1176,7 @@ void MyFrame::OnPQDisplayAll(wxCommandEvent& WXUNUSED (event )) {
         
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
-        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Priority Queue*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
     
@@ -1179,7 +1188,7 @@ void MyFrame::OnPQShowHead(wxCommandEvent& WXUNUSED ( event )) {
     
     string record = head;
     wxString wxRecord(record.c_str(), wxConvUTF8);
-    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Priority Queue*****\n\n"));
     mainEditBox->AppendText(wxRecord);
 }
 
@@ -1189,7 +1198,7 @@ void MyFrame::OnPQShowTail(wxCommandEvent& WXUNUSED ( event )) {
     
     string record = tail;
     wxString wxRecord(record.c_str(), wxConvUTF8);
-    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Deque*****\n\n"));
+    mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Head of the Priority Quque*****\n\n"));
     mainEditBox->AppendText(wxRecord);
 }
 
@@ -1321,7 +1330,7 @@ void MyFrame::OnStackDisplayAll(wxCommandEvent& WXUNUSED (event)) {
     string all = theStack->displayStack();
     string record = all;
     if (all.size() == 0)
-        mainEditBox->AppendText(wxT("\n\n\t\tThe Queue is empty!\n"));
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Stack is empty!\n"));
     else
     {
         
@@ -1329,7 +1338,7 @@ void MyFrame::OnStackDisplayAll(wxCommandEvent& WXUNUSED (event)) {
         
         
         wxString wxRecords(all.c_str(), wxConvUTF8);
-        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Queue*****\n\n"));
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying the Records of the Stack*****\n\n"));
         mainEditBox->AppendText(wxRecords);
     }
 }
@@ -1959,9 +1968,149 @@ void MyFrame::onRBTPostorder(wxCommandEvent& WXUNUSED(event)) {
 //=========== Definitions for the Splay Functions =====================================\\
 //===================================================================================\\
 
+void MyFrame::onCreateSplay(wxCommandEvent& WXUNUSED (event)) {
+    mainEditBox -> Clear();
+    
+    string record;
+    string theRecord;
+    string fileLine;
+    
+    int theID;
+    string fName;
+    string lName;
+    string destination;
+    string season;
+    string booking;
+    
+    theSplay -> ~Splay();
+    
+    ifstream inFile;
+    inFile.open(currentDocPath.mb_str(), ios::in);
+    
+    if (!inFile) {
+        mainEditBox->AppendText(wxT("\n\n\nAin't no data in here..\n\n"));
+        return;
+    }
+    getline(inFile, fileLine, '\n');
+    while (!inFile.eof()) {
+        getline(inFile, fileLine, '\n');
+        
+        istringstream ss(fileLine);
+        getline(ss, record, ' ');
+        inFile >> theID;
+        inFile.ignore(',', '\t');
+        inFile >> fName;
+        inFile >> lName;
+        inFile >> destination >> season;
+        inFile >> booking;
+        cout << theID << endl;
+        
+        
+        theSplay->insert(theID, fName, lName, destination, season, booking);
+        record = makeTheRecord(theID, fName, lName, destination, season, booking);
+        record.append("\n");
+        wxString wxRecord(record.c_str(), wxConvUTF8);
+        mainEditBox->AppendText(wxRecord);
+        
+        record = "";
+        
+    }
+    inFile.close();
+}
 
+void MyFrame::onSplayAddData(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    
+    vacationRecord data;
+    Dialog *datadialog = new Dialog( wxT("Data Entry for Splay Tree"),
+                                    wxPoint(200,200), wxSize(420,420) );
+    if (datadialog->ShowModal() == wxID_OK) {
+        data.ID = datadialog-> idEditBox->GetValue();
+        data.fName = datadialog -> firstNameEditBox->GetValue();
+        data.lName = datadialog -> lastNameEditBox->GetValue();
+        data.destination = datadialog -> destinationEditBox->GetValue();
+        data.booking = datadialog -> bookingEditBox->GetValue();
+        data.season = datadialog -> seasonCombo->GetValue();
+        
+        mainEditBox->Clear();
+        
+        int ID =to_int(string(data.ID.mb_str()));
+        string fName = string(data.fName.mb_str());
+        string lName = string(data.lName.mb_str());
+        string destination = string(data.destination.mb_str());
+        string booking = string(data.booking.mb_str());
+        string season = string(data.season.mb_str());
+        
+        mainEditBox->AppendText(getRecord(data));
+        theSplay -> insert(ID, fName, lName, destination, season, booking);
+    }
+    
+    else {
+        datadialog -> Close();
+        
+    }
+    datadialog -> Destroy();
+}
 
+void MyFrame::onSplayDeleteData(wxCommandEvent& WXUNUSED(event)) {
+    
+}
 
+void MyFrame::onSplayInorder(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theSplay->inOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Splay Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying In-order Traversal of Splay Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onSplayPreorder(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theSplay->preOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Splay Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Pre-order Traversal of Splay Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+}
+
+void MyFrame::onSplayPostorder(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
+    
+    //Get the data
+    string records = theSplay->postOrder();
+    if (records.size() == 0 )
+        mainEditBox->AppendText(wxT("\n\n\t\tThe Splay Tree is empty!\n"));
+    else
+    {
+        //Convert data to a wx string
+        wxString wxRecords(records.c_str(), wxConvUTF8);
+        
+        //Output the data
+        mainEditBox->AppendText(wxT("\n\t\t*****Displaying Post-order Traversal of Splay Tree*****\n\n"));
+        mainEditBox->AppendText(wxRecords);
+    }
+    
+}
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {
         wxMessageBox(wxT("HELP!!!"), wxT("Minimal Help"), 
                      wxOK | wxCANCEL | wxICON_QUESTION, this);
