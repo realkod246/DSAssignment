@@ -82,8 +82,8 @@
 				651FFCE5206BE2F800578232 /* AVLTree.h */,
 				65F7D68E2065780000C20BD7 /* BSTree.h */,
 				65DA5B1B2079034700B36E55 /* Heap.h */,
-				65DA5B1C20791EAB00B36E55 /* RBTree.h */,
 				65DA5B1A2078F46D00B36E55 /* Splay.h */,
+				65DA5B1C20791EAB00B36E55 /* RBTree.h */,
 			);
 			path = DSAssignment;
 			sourceTree = "<group>";
