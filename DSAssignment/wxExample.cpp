@@ -28,6 +28,7 @@
 #include "Splay.h"
 #include "RBTree.h"
 #include "Heap.h"
+#include "Set.h"
 
 using namespace std;
 

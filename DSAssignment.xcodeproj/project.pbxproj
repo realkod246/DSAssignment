@@ -33,6 +33,7 @@
 		653E565C205AC863001F4AF8 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		653E565D205AC864001F4AF8 /* deque.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deque.h; sourceTree = "<group>"; };
 		653E565E205AC864001F4AF8 /* LinkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkList.h; sourceTree = "<group>"; };
+		65D200A4207BB5C200177221 /* Set.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
 		65DA5B1A2078F46D00B36E55 /* Splay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Splay.h; sourceTree = "<group>"; };
 		65DA5B1B2079034700B36E55 /* Heap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Heap.h; sourceTree = "<group>"; };
 		65DA5B1C20791EAB00B36E55 /* RBTree.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RBTree.h; sourceTree = "<group>"; };
@@ -84,6 +85,7 @@
 				65DA5B1B2079034700B36E55 /* Heap.h */,
 				65DA5B1A2078F46D00B36E55 /* Splay.h */,
 				65DA5B1C20791EAB00B36E55 /* RBTree.h */,
+				65D200A4207BB5C200177221 /* Set.h */,
 			);
 			path = DSAssignment;
 			sourceTree = "<group>";
