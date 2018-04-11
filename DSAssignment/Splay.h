@@ -414,7 +414,7 @@ string Splay::postOrderHelper(SplayNode* ptr)
         str.append( postOrderHelper(ptr->left) );
         str.append( postOrderHelper(ptr->right) );
         
-        str.append( to_string( ptr->getID() ) );
+        str.append( to_String( ptr->getID() ) );
         str.append(" [");
         str.append( getLeftID(ptr) );
         str.append(", ");

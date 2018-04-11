@@ -175,20 +175,21 @@ string LinkList::deleteAtBack() {
         return "out of range";
         
     }
+    string theString = "";
     Node *tmp = new Node();
     Node *s = front;
-    Node *toShow = new Node();
     while (s->getNextPtr() != NULL) {
         tmp = s;
         s = s -> getNextPtr();
+        theString = s->getRecord();
     }
     back = tmp;
-    toShow = s;
-    tmp -> setNextPtr(NULL);
     free(s);
+    tmp -> setNextPtr(NULL);
     
     
-    return toShow->getRecord();
+    
+    return theString;
     
     
     num_elements--;
