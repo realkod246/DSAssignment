@@ -2078,6 +2078,7 @@ void MyFrame::onSplayAddData(wxCommandEvent& WXUNUSED(event)) {
 }
 
 void MyFrame::onSplayDeleteData(wxCommandEvent& WXUNUSED(event)) {
+    mainEditBox->Clear();
     
 }
 
