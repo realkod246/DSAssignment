@@ -207,12 +207,14 @@ private:
     void     rotateLeft( RBTNode* );
     void     rotateRight(RBTNode* );
     void     fixUp(RBTNode* );
+    void    deleteNode(RBTNode* );
     string   inOrderHelper(RBTNode* );
     string   preOrderHelper(RBTNode* );
     string   postOrderHelper(RBTNode* );
     RBTNode* findNode(int );
     RBTNode* getMinimum(RBTNode *);
     RBTNode* getInheritor(RBTNode *);
+    RBTNode* getSuccessor(RBTNode *);
     
 public:
     RBTree(){ root = NULL;}
@@ -406,6 +408,63 @@ RBTNode* RBTree::getInheritor(RBTNode* ptr)
     else
         return(getMinimum(ptr->right));
 }
+
+string RBTree::remove(int val)
+{
+    RBTNode* markedNode = findNode(val);
+    string theString = markedNode->getAllData();
+    deleteNode(markedNode);
+    return theString;
+}
+
+void RBTree::deleteNode(RBTNode* node2Zap)
+{
+    if (node2Zap == NULL)    //If node being deleted is NULL then do nothing.
+        return;
+    else
+    {
+        RBTNode *successor, *successorChild;
+        successor = node2Zap;
+        
+        if (node2Zap->left == NULL || node2Zap->right == NULL)
+            //If either of the children is NULL
+            successor = node2Zap;
+        else                    // node2Zap has 2 children
+            successor = getSuccessor(node2Zap);
+
+        
+        if (successor->left == NULL)
+            successorChild = successor->right;
+        else
+            successorChild = successor->right;
+        
+        if (successorChild != NULL)
+            successorChild->parent = successor->parent;
+        
+        if (successor->parent == NULL)
+            root = successorChild;
+        else if (successor == successor->parent->left)
+            successor->parent->left = successorChild;
+        else
+            successor->parent->right = successorChild;
+        
+        if (successor != node2Zap)
+            node2Zap->setID(successor->getID());
+        
+        // Finally... If color is black call fixup otherwise no fixup required
+        if (successor->getColor() == "BLACK" && successorChild != NULL)
+            fixUp(successorChild);
+    }
+}
+
+RBTNode* RBTree::getSuccessor(RBTNode* ptr)
+{
+    if (ptr->right == NULL)
+        return ptr->left;
+    else
+        return(getMinimum(ptr->right));
+}
+
 
 RBTNode* RBTree::getMinimum(RBTNode *ptr)
 {

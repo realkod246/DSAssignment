@@ -425,6 +425,8 @@ EVT_MENU(ID_DisplaySetA, MyFrame::onDisplaySetA)
 EVT_MENU(ID_DisplaySetB, MyFrame::onDisplaySetB)
 EVT_MENU(ID_DisplayInterception, MyFrame::onDisplayIntersect)
 EVT_MENU(ID_DisplayUnion, MyFrame::onDisplayUnion)
+EVT_MENU(ID_DeleteFromSetA, MyFrame::onDelFromSetB)
+EVT_MENU(ID_DeleteFromSetB, MyFrame::onDelFromSetA)
 
 
 
@@ -470,16 +472,16 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         wxMenu *menuFile = new wxMenu;
         menuFile->Append(ID_OpenFile, wxT("Open File..."), wxT("Open an Existing File" ));
         menuFile->AppendSeparator();
-        menuFile->Append( ID_DisplayFile, wxT("Display File..."), wxT("&Display Contents of the Opened File") );
+        menuFile->Append( ID_DisplayFile, wxT("Display File..."), wxT("Display Contents of the Opened File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_Save,        wxT("Save File"      ), wxT("&Save Opened File") );
+        menuFile->Append( ID_Save,        wxT("Save File"      ), wxT("Save Opened File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("Sa&ve Display as a New File") );
+        menuFile->Append( ID_SaveAs,      wxT("Save As..."     ), wxT("Save Display as a New File") );
         menuFile->AppendSeparator();
-        menuFile->Append( ID_About, wxT("&About the Creator") );
+        menuFile->Append( ID_About, wxT("&About the Creator"), wxT("Info About the creator.") );
         menuFile->AppendSeparator();
         
-        menuFile->Append( ID_Quit, wxT("&Exit the Program") );
+        menuFile->Append( ID_Quit, wxT("&Exit the Program"), wxT("Quits the program") );
         
     
         //Append menu items (About and Exit) to the "File" menu item
@@ -492,16 +494,21 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         
         // Create a Queue main-menu item
         wxMenu *menuQueue = new wxMenu;
-        menuQueue -> Append(ID_CreateQueue, wxT("&Create a Queue"));
-        menuQueue -> Append(ID_AddData, wxT("&Add Data to Queue"));
-        menuQueue -> Append(ID_DisplayAllOfQueue, wxT("Display All of Queue"));
-        menuQueue -> Append(ID_ShowHead, wxT("Show Head of Queue"));
-        menuQueue -> Append(ID_ShowTail, wxT("Show Tail of Queue"));
-        menuQueue -> Append(ID_Dequeue, wxT("Dequeue from Queue"));
+        menuQueue -> Append(ID_CreateQueue, wxT("&Create a Queue"), wxT("Creates a Queue"));
+        menuQueue->AppendSeparator();
+        menuQueue -> Append(ID_AddData, wxT("&Add Data to Queue"), wxT("Adds Data to the Queue"));
+        menuQueue->AppendSeparator();
+        menuQueue -> Append(ID_DisplayAllOfQueue, wxT("Display All of Queue"), wxT("Adds Data to the Queue"));
+        menuQueue->AppendSeparator();
+        menuQueue -> Append(ID_ShowHead, wxT("Show Head of Queue"), wxT("Shows head of the Queue"));
+        menuQueue->AppendSeparator();
+        menuQueue -> Append(ID_ShowTail, wxT("Show Tail of Queue"), wxT("Show tail of the Queue"));
+        menuQueue->AppendSeparator();
+        menuQueue -> Append(ID_Dequeue, wxT("Dequeue from Queue"), wxT("Dequeues from the Queue"));
         
         // Create a Deque main-menu item
         wxMenu *menuDeque = new wxMenu;
-        menuDeque -> Append(ID_CreateDeque, wxT("Create &Deque"));
+        menuDeque -> Append(ID_CreateDeque, wxT("Create &Deque"), wxT("Dequeues from the Queue"));
         menuDeque -> Append(ID_AddHead, wxT("Add to Head of Deque"));
         menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All of the Deque"));
         menuDeque -> Append(ID_DequeShowHead, wxT("Show Head of Deque"));
@@ -1459,6 +1466,31 @@ void MyFrame::onAddDataBST(wxCommandEvent& WXUNUSED (event)) {
 
 void MyFrame::onBSTDeleteData(wxCommandEvent& (event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete BST Tree Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        theBST->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
 }
 
 void MyFrame::onBSTInorder(wxCommandEvent& (event)) {
@@ -1622,6 +1654,31 @@ void MyFrame::onAddDataAVL(wxCommandEvent& WXUNUSED (event)) {
 
 void MyFrame::onAVLDeleteData(wxCommandEvent& WXUNUSED (event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete AVL Tree Record"),
+                                         wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        theAVL->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
 }
 
 void MyFrame::onAVLInorder(wxCommandEvent& WXUNUSED (event)) {
@@ -1782,7 +1839,34 @@ void MyFrame::onHeapAddData(wxCommandEvent& WXUNUSED (event)) {
 }
 
 void MyFrame::onHeapDeleteData(wxCommandEvent& WXUNUSED (event)) {
-    // Implement
+    
+    mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete From Top of Heap Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        theHeap->deleteMinHeapVal(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
+    
 }
 
 void MyFrame::onHeapDisplayAll(wxCommandEvent& WXUNUSED(event)) {
@@ -1931,6 +2015,31 @@ void MyFrame::onRBTAddData(wxCommandEvent& WXUNUSED(event)) {
 
 void MyFrame::onRBTDeleteData(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete RB Tree Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        theRB->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
     
 }
 
@@ -2079,6 +2188,31 @@ void MyFrame::onSplayAddData(wxCommandEvent& WXUNUSED(event)) {
 
 void MyFrame::onSplayDeleteData(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete Splay Tree Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        theSplay->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
     
 }
 
@@ -2286,9 +2420,11 @@ void MyFrame::onDisplaySetB(wxCommandEvent& WXUNUSED(event)) {
 void MyFrame::onDisplayIntersect(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
     
-    Heap in = SetB->intersectionSet(SetA, SetB);
+    Set* setC = new Set();
     
-    string record = in.displayHeap();
+    setC->intersectionSet(SetA, SetB);
+    
+    string record = setC->displaySet();
     if (record.size() == 0)
         mainEditBox->AppendText(wxT("\n\n\t\tEither Set A or Set B is empty!\n"));
     else
@@ -2305,10 +2441,11 @@ void MyFrame::onDisplayIntersect(wxCommandEvent& WXUNUSED(event)) {
 
 void MyFrame::onDisplayUnion(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
+    Set* setC = new Set();
     
-    Heap in = SetB->unionSet(SetA, SetB);
+    setC->unionSet(SetA, SetB);
     
-    string record = in.displayHeap();
+    string record = setC->displaySet();
     if (record.size() == 0)
         mainEditBox->AppendText(wxT("\n\n\t\tEither Set A or Set B is empty!\n"));
     else
@@ -2325,10 +2462,61 @@ void MyFrame::onDisplayUnion(wxCommandEvent& WXUNUSED(event)) {
 
 void MyFrame::onDelFromSetA(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete Set A Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        SetA->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
+    
 }
 
 void MyFrame::onDelFromSetB(wxCommandEvent& WXUNUSED(event)) {
     mainEditBox->Clear();
+    vacationRecord data;
+    
+    Dialog *dialogBox = new Dialog( wxT("Delete Set B Record"),
+                                   wxPoint(200,200), wxSize(600,600) );
+    
+    // If the OK button is clicked...
+    if (dialogBox->ShowModal() == wxID_OK )
+    {
+        //Grab value from the RankBox
+        data.ID = dialogBox->idEditBox->GetValue();
+        
+        
+        //Clear the main edit box and display the record just grabbed
+        mainEditBox->Clear();
+        
+        mainEditBox->AppendText(getRecord(data));
+        
+        int    ID     = to_int(string(data.ID.mb_str()));
+        
+        SetB->remove(ID);
+    }
+    else              //if (dialogBox->ShowModal() == wxID_CANCEL)
+        dialogBox->Close();
+    
+    dialogBox->Destroy();
 }
 
 void MyFrame::OnHelp ( wxCommandEvent& WXUNUSED ( event ) ) {

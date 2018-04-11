@@ -13,89 +13,148 @@
 
 class Set {
 private:
+    vector<Node> set;
     
-    
+
 public:
-public:
-    Heap data;
-    //~Set ( void ) { data.Purge(); }
-    
-    int    getNumElements ( void   ) { return data.Size(); }
-    bool   search         ( int ID, string FName ) { return data.find(ID, FName);  }
-    inline void   add            ( int id, string fn, string ln, string theDestination, string theSeason, string theBooking )
-    {
-        data.addMinHeap(id, fn, ln, theDestination, theSeason, theBooking);
-    }
-    Heap unionSet(Set*, Set*);          // Union of 2 sets
-    Heap intersectionSet(Set*, Set*);   // Intersection of 2 sets
-    string displaySet() { return data.displayHeap(); }
+    Set(void) {set.resize(0);}
+    void purge() {set.resize(0);}
+    int getNumElements () {return set.size();}
+    bool find (int);
+    string add (int, string, string,string,string,string);
+    void remove(int);
+    void show()const;
+    void unionSet(Set*, Set*);          // Union of 2 sets
+    void intersectionSet(Set*, Set*);   // Intersection of 2 sets
+    string displaySet();
+    bool isSubset (Set*);
+    bool isDisjoint (Set*);
 };
 
-Heap Set::unionSet(Set* setA,  Set* setB)
+bool Set::find (int iDno)
 {
-    Set Uset;
-    Uset.data.setData( setA->data.getData() );
-    
-    for (int x = 1; x < setB->data.Size(); x++)
+    for (int i = 0; i < set.size(); i++)
     {
-        if ( !setA->search( setB->data.getIDAt(x), setB->data.getFnameAt(x) ) )
-        {
-            Uset.add( setB->data.getIDAt(x), setB->data.getFnameAt(x),
-                     setB->data.getLnameAt(x), setB->data.getDestinationAt(x),
-                     setB->data.getSeasonAt(x), setB->data.getBookingAt(x) );
-        }
+        if (set[i].getID() == iDno)
+            return true;
     }
-    return Uset.data;
+    return false;
 }
 
-Heap Set::intersectionSet(Set* setA,  Set* setB)
+string Set::add (int iDno, string FirstName, string LastName,
+                 string destination, string season, string booking)
 {
-    Set checkA;
-    Set checkB;
-    Set Iset;
+    Node *temp = new Node(iDno, FirstName, LastName, destination, season, booking);
+    string result = "";
     
-    for (int x = 1; x < setA->data.Size(); x++)
-    {
-        if (setA->data.getSeasonAt(x) == "Winter,"   )
-        {
-            checkA.add( setA->data.getIDAt(x), setA->data.getFnameAt(x),
-                       setA->data.getLnameAt(x), setA->data.getDestinationAt(x),
-                       setA->data.getSeasonAt(x), setA->data.getBookingAt(x) );
-        }
-        
+    // Check if the element is already in the set
+    bool found = find (iDno);
+    
+    if (found)      //elem is in the set already
+        result.append("Data already in the set...");
+    
+    else     //elem is Not found in set
+    {               // add the new set
+        set.push_back(*temp);
+        result.append("New element added..");
     }
-    for (int x = 1; x < setB->data.Size(); x++)
-    {
-        if (setB->data.getSeasonAt(x) == "Winter,")
-        {
-            checkB.add( setB->data.getIDAt(x), setB->data.getFnameAt(x),
-                       setB->data.getLnameAt(x), setB->data.getDestinationAt(x),
-                       setB->data.getSeasonAt(x), setB->data.getBookingAt(x) );
-        }
-        if ( checkA.data.Size() > 1 && checkB.data.Size() > 1 )
-        {
-            for (int x = 1; x < checkA.data.Size(); x++)
-            {
-                Iset.add( checkA.data.getIDAt(x), checkA.data.getFnameAt(x),
-                         checkA.data.getLnameAt(x), checkA.data.getDestinationAt(x),
-                         checkA.data.getSeasonAt(x), checkA.data.getBookingAt(x) );
-            }
-            for (int x = 1; x < checkB.data.Size(); x++)
-            {
-                if ( !checkA.search( checkB.data.getIDAt(x), checkB.data.getFnameAt(x) ) )
-                {
-                    Iset.add( checkB.data.getIDAt(x), checkB.data.getFnameAt(x),
-                             checkB.data.getLnameAt(x), checkB.data.getDestinationAt(x),
-                             checkB.data.getSeasonAt(x), checkB.data.getBookingAt(x) );
-                }
-            }
-        }
-        
-        
-    }
-    return Iset.data;
+    return result;
 }
 
+void Set::remove(int iDno)
+{
+    bool found = find (iDno);
+    string result = " ";
+    int x = 0;
+    
+    if (!found)
+    {
+        result.append("Data is not in the set...");
+        return;
+    }
+    else
+    {
+        while(set[x].getID() != iDno)
+            x++;
+        
+        set[x] = set[set.size()-1];
+        set.pop_back();
+    }
+    return;
+}
+
+void Set::unionSet(Set *setA,  Set *setB)
+{
+    int y;
+    
+    set.resize(0);
+    
+    //    Copy contents of setA to the union-set
+    set = setA->set;
+    y = setA->set.size();
+    
+    //    Copy contents of setB which are missing from setA to the union-set
+    for (int x = 0; x < setB->set.size(); x++)
+    {
+        if (!find(setB->set[x].getID()) )
+        {
+            set.push_back(setB->set[x]);
+            y++;
+        }
+    }
+}
+
+void Set::intersectionSet(Set* setA,  Set* setB)
+{
+    set.resize(0);
+    
+    for (int x = 0; x < setA->set.size(); x++)
+    {
+        if ( setA->set[x].getDestination() == "Trinidad," )
+            set.push_back(setA->set[x]);
+    }
+    for (int x = 0; x < setB->set.size(); x++)
+    {
+        if ( setB->set[x].getDestination() == "Trinidad,")
+            set.push_back(setB->set[x]);
+    }
+    
+}
+
+string Set::displaySet()
+{
+    string str = "";
+    
+    
+    for (int x = 0; x < set.size(); x++)
+    {
+        
+        str.append(set[x].getRecord());
+        str.append("\n");
+    }
+    return str;
+}
+
+bool Set::isSubset(Set* SetA)
+{
+    for (int x = 0; x < set.size(); x++)
+    {
+        if ( !SetA->find(set[x].getID()) )
+            return false;
+    }
+    return true;
+}
+
+
+bool Set::isDisjoint(Set* SetA)
+{
+    for (int x = 0; x < set.size(); x++)
+    {
+        if ( SetA->find(set[x].getID()) )
+            return false;
+    }
+    return true;
+}
 
 
 #endif /* Set_h */

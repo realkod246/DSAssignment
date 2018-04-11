@@ -29,6 +29,7 @@ class Node
             // Accessor functions;
             string getName();
             string getRecord();                     // You need to write that function!
+            string getDestination() {return theDestination;}
             int getID() { return idNo;}      // Inline function
             Node* getNextPtr() { return nextPtr;}   // Inline function
         
