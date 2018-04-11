@@ -533,7 +533,7 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         menuPQueue -> AppendSeparator();
         menuPQueue -> Append(ID_PQShowHead, wxT("Show Head of Priority Queue"), wxT("Shows head of Priority Queue"));
         menuPQueue -> AppendSeparator();
-        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"), wxT("Shows tail of the Priority Queue"), wxT("Dequeues from the Queue"));
+        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"), wxT("Shows tail of the Priority Queue"));
         menuPQueue -> AppendSeparator();
         menuPQueue -> Append(ID_PQDequeue, wxT("Dequeue from Priority Queue"));
         
