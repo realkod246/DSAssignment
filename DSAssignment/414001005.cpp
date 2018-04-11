@@ -504,96 +504,141 @@ MyFrame::MyFrame ( const wxString& title, const wxPoint& pos, const wxSize& size
         menuQueue->AppendSeparator();
         menuQueue -> Append(ID_ShowTail, wxT("Show Tail of Queue"), wxT("Show tail of the Queue"));
         menuQueue->AppendSeparator();
-        menuQueue -> Append(ID_Dequeue, wxT("Dequeue from Queue"), wxT("Dequeues from the Queue"));
+        menuQueue -> Append(ID_Dequeue, wxT("Dequeue from Queue"), wxT("Dequeues from the deque"));
         
         // Create a Deque main-menu item
         wxMenu *menuDeque = new wxMenu;
-        menuDeque -> Append(ID_CreateDeque, wxT("Create &Deque"), wxT("Dequeues from the Queue"));
-        menuDeque -> Append(ID_AddHead, wxT("Add to Head of Deque"));
-        menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All of the Deque"));
-        menuDeque -> Append(ID_DequeShowHead, wxT("Show Head of Deque"));
-        menuDeque -> Append(ID_DequeShowTail, wxT("Show Tail of Deque"));
-        menuDeque -> Append(ID_DequeueHead, wxT("Dequeue Head of Deque"));
-        menuDeque -> Append(ID_DequeueTail, wxT("Dequeue Tail of Deque"));
+        menuDeque -> Append(ID_CreateDeque, wxT("Create &Deque"), wxT("Dequeues from the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_AddHead, wxT("Add to Head of Deque"), wxT("Adds to head of the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_DequeDisplayAll, wxT("Display All of the Deque"), wxT("Displays all the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_DequeShowHead, wxT("Show Head of Deque"), wxT("Show head of the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_DequeShowTail, wxT("Show Tail of Deque"), wxT("Shows tail of the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_DequeueHead, wxT("Dequeue Head of Deque"), wxT("Dequeues from head of the deque"));
+        menuDeque->AppendSeparator();
+        menuDeque -> Append(ID_DequeueTail, wxT("Dequeue Tail of Deque"), wxT("Dequeues from tail of the deque"));
         
         
         // Create a Priority Queue main-menu item
         wxMenu *menuPQueue = new wxMenu;
-        menuPQueue -> Append(ID_CreatePQ, wxT("Create a &Priority Queue"));
-        menuPQueue -> Append(ID_PQAddData, wxT("Add Data to Priority Queue"));
-        menuPQueue -> Append(ID_PQDisplayAll, wxT("Display All of Priority Queue"));
-        menuPQueue -> Append(ID_PQShowHead, wxT("Show Head of Priority Queue"));
-        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"));
+        menuPQueue -> Append(ID_CreatePQ, wxT("Create a &Priority Queue"), wxT("Creates a Priority Queue"));
+        menuPQueue -> AppendSeparator();
+        menuPQueue -> Append(ID_PQAddData, wxT("Add Data to Priority Queue"), wxT("Adds to the Priority Queue"));
+        menuPQueue -> AppendSeparator();
+        menuPQueue -> Append(ID_PQDisplayAll, wxT("Display All of Priority Queue"), wxT("Displays all of the Priority Queue"));
+        menuPQueue -> AppendSeparator();
+        menuPQueue -> Append(ID_PQShowHead, wxT("Show Head of Priority Queue"), wxT("Shows head of Priority Queue"));
+        menuPQueue -> AppendSeparator();
+        menuPQueue -> Append(ID_PQShowTail, wxT("Show Tail of Priority Queue"), wxT("Shows tail of the Priority Queue"), wxT("Dequeues from the Queue"));
+        menuPQueue -> AppendSeparator();
         menuPQueue -> Append(ID_PQDequeue, wxT("Dequeue from Priority Queue"));
         
         
         
         // Create a Stack main-menu item
         wxMenu *menuStack = new wxMenu;
-        menuStack -> Append(ID_CreateStack, wxT("Create a Stack"));
-        menuStack -> Append(ID_Push, wxT("Push to Stack"));
-        menuStack -> Append(ID_Pop, wxT("Pop from Stack"));
-        menuStack -> Append(ID_StackDisplayAll, wxT("Display All of Stack"));
+        menuStack -> Append(ID_CreateStack, wxT("Create a Stack"), wxT("Creates a stack"));
+        menuStack->AppendSeparator();
+        menuStack -> Append(ID_Push, wxT("Push to Stack"), wxT("Push to the stack"));
+        menuStack->AppendSeparator();
+        menuStack -> Append(ID_Pop, wxT("Pop from Stack"), wxT("Pop from the stack"));
+        menuStack->AppendSeparator();
+        menuStack -> Append(ID_StackDisplayAll, wxT("Display All of Stack"), wxT("Displays all of the stack"));
         
         // Create a BST main-menu item
         wxMenu *menuBST = new wxMenu;
-        menuBST -> Append(ID_CreateBST, wxT("Create BST"));
-        menuBST -> Append(ID_AddData, wxT("Add Data"));
-        menuBST -> Append(ID_BSTDeleteData, wxT("Delete Data"));
-        menuBST -> Append(ID_BSTInOrder, wxT("Inorder"));
-        menuBST -> Append(ID_BSTPreOrder, wxT("Preorder"));
-        menuBST -> Append(ID_BSTPostOrder, wxT("Postorder"));
+        menuBST -> Append(ID_CreateBST, wxT("Create BST"), wxT("Creates a BST"));
+        menuBST->AppendSeparator();
+        menuBST -> Append(ID_AddData, wxT("Add Data"), wxT("Add to BST"));
+        menuBST->AppendSeparator();
+        menuBST -> Append(ID_BSTDeleteData, wxT("Delete Data"), wxT("Deletes from BST"));
+        menuBST->AppendSeparator();
+        menuBST -> Append(ID_BSTInOrder, wxT("Inorder"), wxT("In order the BST"));
+        menuBST->AppendSeparator();
+        menuBST -> Append(ID_BSTPreOrder, wxT("Preorder"), wxT("Pre order the BST"));
+        menuBST->AppendSeparator();
+        menuBST -> Append(ID_BSTPostOrder, wxT("Postorder"), wxT("Post order the BST"));
         
         
         
         // Create a AVL main-menu item
         wxMenu *menuAVL = new wxMenu;
-        menuAVL -> Append(ID_CreateAVL, wxT("Create AVL"));
-        menuAVL -> Append(ID_AVLAddData, wxT("Add Data"));
-        menuAVL -> Append(ID_AVLDeleteData, wxT("Delete Data"));
-        menuAVL -> Append(ID_AVLInOrder, wxT("Inorder"));
-        menuAVL -> Append(ID_AVLPreOrder, wxT("Preorder"));
-        menuAVL -> Append(ID_AVLPostOrder, wxT("Postorder"));
+        menuAVL -> Append(ID_CreateAVL, wxT("Create AVL"), wxT("Creates an AVL Tree"));
+        menuAVL->AppendSeparator();
+        menuAVL -> Append(ID_AVLAddData, wxT("Add Data"), wxT("Add data to AVL"));
+        menuAVL->AppendSeparator();
+        menuAVL -> Append(ID_AVLDeleteData, wxT("Delete Data"), wxT("Delete Data from AVL"));
+        menuAVL->AppendSeparator();
+        menuAVL -> Append(ID_AVLInOrder, wxT("Inorder"), wxT("AVL In Order"));
+        menuAVL->AppendSeparator();
+        menuAVL -> Append(ID_AVLPreOrder, wxT("Preorder"), wxT("AVL Pre Order"));
+        menuAVL->AppendSeparator();
+        menuAVL -> Append(ID_AVLPostOrder, wxT("Postorder"), wxT("AVL Post Order"));
         
         // Create a Heap main-menu item
         wxMenu *menuHeap = new wxMenu;
-        menuHeap -> Append(ID_CreateHeap, wxT("Create Heap"));
-        menuHeap -> Append(ID_HeapAddData, wxT("Add Data"));
-        menuHeap -> Append(ID_HeapDeleteData, wxT("Delete Data"));
-        menuHeap -> Append(ID_HeapDisplayAll, wxT("Display All"));
-        menuHeap -> Append(ID_SortHeap, wxT("Heap Sort"));
+        menuHeap -> Append(ID_CreateHeap, wxT("Create Heap"), wxT("Creates the Heap"));
+        menuHeap->AppendSeparator();
+        menuHeap -> Append(ID_HeapAddData, wxT("Add Data"), wxT("Add Data to Heap"));
+        menuHeap->AppendSeparator();
+        menuHeap -> Append(ID_HeapDeleteData, wxT("Delete Data"), wxT("Delete from Heap"));
+        menuHeap->AppendSeparator();
+        menuHeap -> Append(ID_HeapDisplayAll, wxT("Display All"), wxT("Display All of Heap"));
+        menuHeap->AppendSeparator();
+        menuHeap -> Append(ID_SortHeap, wxT("Heap Sort"), wxT("Sort the Heap"));
         
         
         
         // Create a RB Tree main-menu item
         wxMenu *menuRBTree = new wxMenu;
-        menuRBTree -> Append(ID_CreateRBT, wxT("Create RBT"));
-        menuRBTree -> Append(ID_RBTAddData, wxT("Add Data"));
-        menuRBTree -> Append(ID_RBTDeleteData, wxT("Delete Data"));
-        menuRBTree -> Append(ID_RBTInOrder, wxT("Inorder"));
-        menuRBTree -> Append(ID_RBTPreOrder, wxT("Preorder"));
-        menuRBTree -> Append(ID_RBTPostOrder, wxT("Postorder"));
+        menuRBTree -> Append(ID_CreateRBT, wxT("Create RBT"), wxT("Create the RBT"));
+        menuRBTree->AppendSeparator();
+        menuRBTree -> Append(ID_RBTAddData, wxT("Add Data"), wxT("RBT Add data"));
+        menuRBTree->AppendSeparator();
+        menuRBTree -> Append(ID_RBTDeleteData, wxT("Delete Data"), wxT("RBT Delete Data"));
+        menuRBTree->AppendSeparator();
+        menuRBTree -> Append(ID_RBTInOrder, wxT("Inorder"), wxT("RBT In Order"));
+        menuRBTree->AppendSeparator();
+        menuRBTree -> Append(ID_RBTPreOrder, wxT("Preorder"), wxT("RBT Pre Order"));
+        menuRBTree->AppendSeparator();
+        menuRBTree -> Append(ID_RBTPostOrder, wxT("Postorder"), wxT("RBT Post Order"));
         
         // Create a Splay main-menu item
         wxMenu *menuSplay = new wxMenu;
-        menuSplay -> Append(ID_CreateSplay, wxT("Create Splay"));
-        menuSplay -> Append(ID_SplayAddData, wxT("Add Data"));
-        menuSplay -> Append(ID_SplayDeleteData, wxT("Delete Data"));
-        menuSplay -> Append(ID_SplayInOrder, wxT("Inorder"));
-        menuSplay -> Append(ID_SplayPreOrder, wxT("Preorder"));
-        menuSplay -> Append(ID_SplayPostOrder, wxT("Postorder"));
+        menuSplay -> Append(ID_CreateSplay, wxT("Create Splay"), wxT("Creates Splay"));
+        menuSplay->AppendSeparator();
+        menuSplay -> Append(ID_SplayAddData, wxT("Add Data"), wxT("Add Data to Splay"));
+        menuSplay->AppendSeparator();
+        menuSplay -> Append(ID_SplayDeleteData, wxT("Delete Data"), wxT("Deletes data from Splay"));
+        menuSplay->AppendSeparator();
+        menuSplay -> Append(ID_SplayInOrder, wxT("Inorder"), wxT("In Order Splay"));
+        menuSplay->AppendSeparator();
+        menuSplay -> Append(ID_SplayPreOrder, wxT("Preorder"), wxT("Pre Order Splay"));
+        menuSplay->AppendSeparator();
+        menuSplay -> Append(ID_SplayPostOrder, wxT("Postorder"), wxT("Post Order Splay"));
         
         
         // Create a Set main-menu item
         wxMenu *menuSet = new wxMenu;
-        menuSet -> Append(ID_CreateSets, wxT("Create Sets"));
-        menuSet -> Append(ID_SetsAddData, wxT("Add Data"));
-        menuSet -> Append(ID_DisplaySetA, wxT("Display SetA"));
-        menuSet -> Append(ID_DisplaySetB, wxT("Display SetB"));
-        menuSet -> Append(ID_DisplayInterception, wxT("Display Interception"));
-        menuSet -> Append(ID_DisplayUnion, wxT("Display Union"));
-        menuSet -> Append(ID_DeleteFromSetA, wxT("Delete from SetA"));
-        menuSet -> Append(ID_DeleteFromSetB, wxT("Delete from SetB"));
+        menuSet -> Append(ID_CreateSets, wxT("Create Sets"), wxT("Creates Sets"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_SetsAddData, wxT("Add Data"), wxT("Adds Data to Set"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DisplaySetA, wxT("Display SetA"), wxT("Displays Set A"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DisplaySetB, wxT("Display SetB"), wxT("Display Set B"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DisplayInterception, wxT("Display Interception"), wxT("Displays Interception"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DisplayUnion, wxT("Display Union"), wxT("Display a Union of Sets"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DeleteFromSetA, wxT("Delete from SetA"), wxT("Deletes from Set A"));
+        menuSet->AppendSeparator();
+        menuSet -> Append(ID_DeleteFromSetB, wxT("Delete from SetB"), wxT("Deletes from Set B"));
         
     
         //Create a "Help" main-menu item
